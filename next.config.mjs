@@ -1,7 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["i.postimg.cc"], // Add 'i.postimg.cc' to allowed domains
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "i.postimg.cc",
+        pathname: "/**", // Allow all paths on this domain
+      },
+    ],
   },
 };
 
