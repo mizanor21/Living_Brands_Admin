@@ -1,32 +1,26 @@
-import { HomeDefines, HomeElevate, HomeHero } from "./models";
-import { connectToDB } from "../connectToDB";
+import HeroSection from "@/app/ui/Home/HeroSection";
 
-export const heroData = async () => {
+const getHerosData = async () => {
   try {
-    connectToDB();
-    const response = await HomeHero.find().lean();
-    return response;
+    const res = await fetch("http://localhost:3000/api/home", {
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch hero data");
+    }
+    const data = await res.json();
+    return data.heroes; // Return the array directly
   } catch (error) {
-    console.log(error);
+    console.error("Error fetching heros:", error);
   }
 };
 
-export const elevateData = async () => {
-  try {
-    connectToDB();
-    const response = await HomeElevate.find().lean();
-    return response;
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-export const definesData = async () => {
-  try {
-    connectToDB();
-    const response = await HomeDefines.find().lean();
-    return response;
-  } catch (error) {
-    console.error(error);
-  }
-};
+export default async function HeroData() {
+  const heros = await getHerosData();
+  return (
+    <div>
+      <HeroSection heros={heros} /> {/* Pass 'heros' array directly */}
+    </div>
+  );
+}

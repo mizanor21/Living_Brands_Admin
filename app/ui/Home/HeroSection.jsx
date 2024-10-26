@@ -7,7 +7,7 @@ import { IoIosAddCircle } from "react-icons/io";
 import { LiaEditSolid } from "react-icons/lia";
 import { RiDeleteBin6Fill } from "react-icons/ri";
 
-const HeroSection = ({ dataHero }) => {
+const HeroSection = ({ heros }) => {
   const {
     register,
     formState: { errors },
@@ -19,7 +19,7 @@ const HeroSection = ({ dataHero }) => {
     <div>
       {/* Hero Section  */}
 
-      {dataHero.map((data, i) => (
+      {heros.map((data, i) => (
         <div key={i} className="relative rounded-lg bg-white p-[2%]">
           <div className="flex items-center justify-between mb-5">
             <h3 className="font-bold uppercase ">Hero Section </h3>
@@ -64,7 +64,7 @@ const HeroSection = ({ dataHero }) => {
                 </label>
                 <br />
                 <textarea
-                  defaultValue={data.shortDescription}
+                  defaultValue={data?.shortDescription}
                   {...register("shortDescription", {
                     required: "Short Description is required",
                   })}
