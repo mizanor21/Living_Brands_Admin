@@ -3,6 +3,17 @@ import Link from "next/link";
 import React from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
+const removeWork = async (id) => {
+  const confirm = window.confirm(`Are you sure you want to delete work item?`);
+
+  if (confirm) {
+    await fetch(`http://localhost:3000/api/works?id=${id}`, {
+      method: "DELETE",
+    });
+    alert("Successfully work item deleted!");
+  }
+};
+
 const Works = ({ works }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-5 gap-y-8 md:gap-y-10">
@@ -20,8 +31,8 @@ const Works = ({ works }) => {
               <h2 className="text-md lg:text-lg font-extrabold mt-3">
                 {item?.title}
               </h2>
-              <div className="hidden group-hover:block">
-                <button className="">
+              <div className="hidden group-hover:flex gap-3">
+                <button className="" onClick={() => removeWork(item._id)}>
                   <RiDeleteBin6Line />
                 </button>
               </div>
