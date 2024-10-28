@@ -1,13 +1,24 @@
+"use client";
 import Image from "next/image";
-import Link from "next/link";
 import React from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
+
+const removeBlog = async (id) => {
+  const confirm = window.confirm(`Are you sure you want to delete blog?`);
+
+  if (confirm) {
+    await fetch(`http://localhost:3000/api/blogs?id=${id}`, {
+      method: "DELETE",
+    });
+    alert("Successfully Blog deleted!");
+  }
+};
 
 const Blogs = ({ blogs }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 gap-y-8 md:gap-y-20">
       {blogs.map((item) => (
-        <Link key={item.id} href={`/blogs/${item?._id}`} className="group">
+        <div key={item.id} className="group">
           <div>
             <Image
               src={item?.img}
@@ -20,8 +31,8 @@ const Blogs = ({ blogs }) => {
               <h2 className="text-md lg:text-lg font-extrabold mt-3">
                 {item?.title}
               </h2>
-              <div className="hidden group-hover:block">
-                <button className="">
+              <div className="hidden group-hover:flex gap-3">
+                <button onClick={() => removeBlog(item._id)} className="">
                   <RiDeleteBin6Line />
                 </button>
               </div>
@@ -30,7 +41,7 @@ const Blogs = ({ blogs }) => {
               {item?.detailsTitle}
             </p>
           </div>
-        </Link>
+        </div>
       ))}
     </div>
   );
