@@ -1,24 +1,30 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
-const removeWork = async (id) => {
-  const confirm = window.confirm(`Are you sure you want to delete work item?`);
-
-  if (confirm) {
-    await fetch(`http://localhost:3000/api/works?id=${id}`, {
-      method: "DELETE",
-    });
-    alert("Successfully work item deleted!");
-  }
-};
-
 const Works = ({ works }) => {
+  const router = useRouter();
+  const removeWork = async (id) => {
+    const confirm = window.confirm(
+      `Are you sure you want to delete work item?`
+    );
+
+    if (confirm) {
+      const res = await fetch(`http://localhost:3000/api/works?id=${id}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        router.refresh();
+        alert("Successfully work item deleted!");
+      }
+    }
+  };
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-5 gap-y-8 md:gap-y-10">
       {works.map((item) => (
-        <Link key={item.id} href={`/work/${item?._id}`} className="group">
+        <div key={item.id} className="group">
           <div>
             <Image
               src={item?.img}
@@ -41,7 +47,7 @@ const Works = ({ works }) => {
               {item?.detailsTitle}
             </p>
           </div>
-        </Link>
+        </div>
       ))}
     </div>
   );
