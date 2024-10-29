@@ -1,3 +1,4 @@
+import { BrandService } from "@/app/lib/BrandAccordion/model";
 import { connectToDB } from "@/app/lib/connectToDB";
 import { Teams } from "@/app/lib/Teams/model";
 import { NextResponse } from "next/server";
@@ -9,12 +10,16 @@ export async function PATCH(req, { params }) {
   await connectToDB();
 
   try {
-    const updatedJob = await Teams.findByIdAndUpdate(id, updateData, {
-      new: true, // Returns the updated document
-      runValidators: true, // Ensures model validation
-    });
+    const updatedBrandService = await BrandService.findByIdAndUpdate(
+      id,
+      updateData,
+      {
+        new: true, // Returns the updated document
+        runValidators: true, // Ensures model validation
+      }
+    );
 
-    if (!updatedJob) {
+    if (!updatedBrandService) {
       return NextResponse.json(
         { message: "team data not found" },
         { status: 404 }
@@ -22,7 +27,7 @@ export async function PATCH(req, { params }) {
     }
 
     return NextResponse.json(
-      { message: "Data Successfully Updated", data: updatedJob },
+      { message: "Data Successfully Updated", data: updatedBrandService },
       { status: 200 }
     );
   } catch (error) {
@@ -32,17 +37,4 @@ export async function PATCH(req, { params }) {
       { status: 500 }
     );
   }
-}
-
-export async function GET(req, { params }) {
-  const { id } = params;
-  await connectToDB();
-  const team = await Teams.findOne({ _id: id });
-  if (!team) {
-    return NextResponse.json(
-      { message: "team data not found" },
-      { status: 404 }
-    );
-  }
-  return NextResponse.json(team, { status: 200 });
 }
