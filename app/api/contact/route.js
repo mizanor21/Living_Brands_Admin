@@ -1,12 +1,11 @@
 import { connectToDB } from "@/app/lib/connectToDB";
-import { Contact } from "@/app/lib/Contact/model";
-import { Teams } from "@/app/lib/Teams/model";
+import { ContactImg } from "@/app/lib/ContactImg/model";
 import { NextResponse } from "next/server";
 
 export async function GET() {
   await connectToDB();
-  const contact = await Contact.find();
-  return NextResponse.json(contact);
+  const contactImg = await ContactImg.find();
+  return NextResponse.json(contactImg);
 }
 
 export async function POST(req) {
@@ -15,7 +14,7 @@ export async function POST(req) {
 
     // Connect to the database
     await connectToDB();
-    await Contact.create(contactData);
+    await ContactImg.create(contactData);
     return NextResponse.json(
       { message: "contact data created" },
       { status: 201 }
@@ -33,7 +32,7 @@ export async function DELETE(req) {
     const url = new URL(req.url);
     const id = url.searchParams.get("id");
     await connectToDB();
-    const deletedContactImg = await Contact.findByIdAndDelete(id);
+    const deletedContactImg = await ContactImg.findByIdAndDelete(id);
     if (!deletedContactImg) {
       return NextResponse.json(
         { message: "ContactImg data not found" },

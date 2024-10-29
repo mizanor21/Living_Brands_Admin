@@ -6,5 +6,5 @@ const ContactSchema = new mongoose.Schema({
   isActive: Boolean,
 });
 
-export const Contact =
-  mongoose.models.ContactSchema || mongoose.model("Contactimg", ContactSchema);
+export const ContactImg =
+  mongoose.models.ContactImg || mongoose.model("ContactImg", ContactSchema);

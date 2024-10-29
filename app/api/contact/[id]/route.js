@@ -1,4 +1,5 @@
 import { connectToDB } from "@/app/lib/connectToDB";
+import { ContactImg } from "@/app/lib/ContactImg/model";
 import { Teams } from "@/app/lib/Teams/model";
 import { NextResponse } from "next/server";
 
@@ -9,20 +10,24 @@ export async function PATCH(req, { params }) {
   await connectToDB();
 
   try {
-    const updatedJob = await Teams.findByIdAndUpdate(id, updateData, {
-      new: true, // Returns the updated document
-      runValidators: true, // Ensures model validation
-    });
+    const updatedContactImg = await ContactImg.findByIdAndUpdate(
+      id,
+      updateData,
+      {
+        new: true, // Returns the updated document
+        runValidators: true, // Ensures model validation
+      }
+    );
 
-    if (!updatedJob) {
+    if (!updatedContactImg) {
       return NextResponse.json(
-        { message: "team data not found" },
+        { message: "contact data not found" },
         { status: 404 }
       );
     }
 
     return NextResponse.json(
-      { message: "Data Successfully Updated", data: updatedJob },
+      { message: "Data Successfully Updated", data: updatedContactImg },
       { status: 200 }
     );
   } catch (error) {
