@@ -2,6 +2,8 @@
 import Image from "next/image";
 import React from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { LuClipboardEdit } from "react-icons/lu";
+import BlogModal from "./BlogModal";
 
 const removeBlog = async (id) => {
   const confirm = window.confirm(`Are you sure you want to delete blog?`);
@@ -31,7 +33,14 @@ const Blogs = ({ blogs }) => {
               <h2 className="text-md lg:text-lg font-extrabold mt-3">
                 {item?.title}
               </h2>
-              <div className="hidden group-hover:flex gap-3">
+              <div className="hidden group-hover:flex gap-3 text-xl">
+                <button
+                  onClick={() =>
+                    document.getElementById("blogModal").showModal()
+                  }
+                >
+                  <LuClipboardEdit />
+                </button>
                 <button onClick={() => removeBlog(item._id)} className="">
                   <RiDeleteBin6Line />
                 </button>
@@ -43,6 +52,7 @@ const Blogs = ({ blogs }) => {
           </div>
         </div>
       ))}
+      <BlogModal />
     </div>
   );
 };
