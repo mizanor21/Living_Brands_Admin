@@ -125,7 +125,7 @@ const Partnership = () => {
         <div className="flex justify-end">
           <button
             onClick={() => setModalOpen(true)}
-            className="mb-4 text-xl bg-green-500 text-white rounded-full p-2 flex items-center"
+            className="mb-4 text-xl bg-[#14797b] hover:bg-[#296e6f] text-white rounded-full px-8 py-3 flex items-center"
           >
             <IoIosAddCircle className="mr-2" /> Add Partner
           </button>
