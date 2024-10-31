@@ -6,58 +6,46 @@ import { useForm } from "react-hook-form";
 import { IoIosAddCircle } from "react-icons/io";
 import { LiaEditSolid } from "react-icons/lia";
 import { RiDeleteBin6Fill } from "react-icons/ri";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // Import toast styles
 
 const HeroSection = () => {
   const [heros, setHeros] = useState([]);
-
-  const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState(null);
   const {
     register,
-    formState: { errors },
     handleSubmit,
+    formState: { errors },
   } = useForm();
 
   useEffect(() => {
     const fetchHerosData = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/home`, {
-          cache: "no-store",
-        });
-
-        if (!res.ok) throw new Error("Failed to fetch hero data");
-
-        const data = await res.json();
-        setHeros(data || []); // Default to empty array if not found
+        const { data } = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/home`
+        );
+        setHeros(data || []);
       } catch (error) {
-        console.error("Error fetching heros:", error);
         setFetchError("Failed to load hero data. Please try again later.");
-      } finally {
-        setLoading(false);
       }
     };
-
     fetchHerosData();
   }, []);
 
   const onSubmit = async (data) => {
     try {
-      const response = await fetch(
+      await axios.patch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/home/6718863eeb96ef16ccbf6172`,
+        data,
         {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
+          headers: { "Content-Type": "application/json" },
         }
       );
-
-      if (!response.ok) throw new Error("Failed to update hero data");
-
-      console.log("Hero data updated successfully");
+      toast.success("Hero data updated successfully!"); // Show success notification
     } catch (error) {
       console.error("Error updating hero data:", error);
+      toast.error("Failed to update hero data."); // Show error notification
     }
   };
 
@@ -70,13 +58,12 @@ const HeroSection = () => {
 
   return (
     <div>
-      {loading ? (
-        <p>Loading heros...</p>
-      ) : fetchError ? (
+      <ToastContainer />
+      {fetchError ? (
         <p>{fetchError}</p>
-      ) : (
-        heros.map(({ id, title, shortDescription }, i) => (
-          <div key={i} className="relative rounded-lg bg-white p-[2%]">
+      ) : heros.length > 0 ? (
+        heros.map(({ id, title, shortDescription }) => (
+          <div key={id} className="relative rounded-lg bg-white p-[2%]">
             <div className="flex items-center justify-between mb-5">
               <h3 className="font-bold uppercase">Hero Section</h3>
               <div className="flex gap-1">
@@ -105,7 +92,6 @@ const HeroSection = () => {
                   />
                   {renderError(errors.title)}
                 </div>
-
                 <div className="w-full">
                   <label>
                     Short Description <span className="text-red-600">*</span>
@@ -120,7 +106,6 @@ const HeroSection = () => {
                   />
                   {renderError(errors.shortDescription)}
                 </div>
-
                 <div className="w-full">
                   <label>
                     Hero Image <span className="text-red-600">*</span>
@@ -135,7 +120,6 @@ const HeroSection = () => {
                   {renderError(errors.heroImage)}
                 </div>
               </div>
-
               <div className="w-full flex justify-end items-center mt-4">
                 <Button
                   type="submit"
@@ -148,6 +132,8 @@ const HeroSection = () => {
             <BorderBeam size={250} duration={12} delay={9} />
           </div>
         ))
+      ) : (
+        <p>No hero data available.</p>
       )}
     </div>
   );
