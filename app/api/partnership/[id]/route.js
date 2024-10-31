@@ -1,4 +1,5 @@
 import { connectToDB } from "@/app/lib/connectToDB";
+import { Partnership } from "@/app/lib/partnership/model";
 import { Teams } from "@/app/lib/Teams/model";
 import { NextResponse } from "next/server";
 
@@ -9,7 +10,7 @@ export async function PATCH(req, { params }) {
   await connectToDB();
 
   try {
-    const updatedJob = await Teams.findByIdAndUpdate(id, updateData, {
+    const updatedJob = await Partnership.findByIdAndUpdate(id, updateData, {
       new: true, // Returns the updated document
       runValidators: true, // Ensures model validation
     });
@@ -37,12 +38,12 @@ export async function PATCH(req, { params }) {
 export async function GET(req, { params }) {
   const { id } = params;
   await connectToDB();
-  const team = await Teams.findOne({ _id: id });
-  if (!team) {
+  const partnership = await Partnership.findOne({ _id: id });
+  if (!partnership) {
     return NextResponse.json(
-      { message: "team data not found" },
+      { message: "partnership data not found" },
       { status: 404 }
     );
   }
-  return NextResponse.json(team, { status: 200 });
+  return NextResponse.json(partnership, { status: 200 });
 }
