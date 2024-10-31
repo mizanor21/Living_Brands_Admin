@@ -9,6 +9,9 @@ import { RiDeleteBin6Fill } from "react-icons/ri";
 
 const HeroSection = () => {
   const [heros, setHeros] = useState([]);
+
+  const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(null);
   const {
     register,
     formState: { errors },
@@ -18,7 +21,7 @@ const HeroSection = () => {
   useEffect(() => {
     const fetchHerosData = async () => {
       try {
-        const res = await fetch("http://localhost:3000/api/home", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/home`, {
           cache: "no-store",
         });
 
@@ -28,15 +31,34 @@ const HeroSection = () => {
         setHeros(data || []); // Default to empty array if not found
       } catch (error) {
         console.error("Error fetching heros:", error);
+        setFetchError("Failed to load hero data. Please try again later.");
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchHerosData();
   }, []);
 
-  const onSubmit = (data) => {
-    console.log(data);
-    // Handle form submission logic here
+  const onSubmit = async (data) => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/home/6718863eeb96ef16ccbf6172`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      if (!response.ok) throw new Error("Failed to update hero data");
+
+      console.log("Hero data updated successfully");
+    } catch (error) {
+      console.error("Error updating hero data:", error);
+    }
   };
 
   const renderError = (error) =>
@@ -48,8 +70,12 @@ const HeroSection = () => {
 
   return (
     <div>
-      {heros.length > 0 ? (
-        heros.map(({ title, shortDescription }, i) => (
+      {loading ? (
+        <p>Loading heros...</p>
+      ) : fetchError ? (
+        <p>{fetchError}</p>
+      ) : (
+        heros.map(({ id, title, shortDescription }, i) => (
           <div key={i} className="relative rounded-lg bg-white p-[2%]">
             <div className="flex items-center justify-between mb-5">
               <h3 className="font-bold uppercase">Hero Section</h3>
@@ -110,21 +136,18 @@ const HeroSection = () => {
                 </div>
               </div>
 
-              <div className="w-full flex justify-end items-center">
-                <Button className="px-10 bg-[#147274] hover:bg-[#145e60]">
-                  <input
-                    type="submit"
-                    value="Save"
-                    className="cursor-pointer"
-                  />
+              <div className="w-full flex justify-end items-center mt-4">
+                <Button
+                  type="submit"
+                  className="px-10 bg-[#147274] hover:bg-[#145e60]"
+                >
+                  Save
                 </Button>
               </div>
             </form>
             <BorderBeam size={250} duration={12} delay={9} />
           </div>
         ))
-      ) : (
-        <p>Loading heros...</p>
       )}
     </div>
   );
