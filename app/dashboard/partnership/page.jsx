@@ -7,6 +7,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { IoIosAddCircle } from "react-icons/io";
 import { LiaEditSolid } from "react-icons/lia";
 import { RiDeleteBin6Fill } from "react-icons/ri";
+import Modal from "./Modal";
+// import Modal from "./components/Modal"; // Adjust the path based on your project structure
 
 const Partnership = () => {
   const [partnersData, setPartnersData] = useState([]);
@@ -14,6 +16,7 @@ const Partnership = () => {
   const [editedName, setEditedName] = useState("");
   const [editedDescription, setEditedDescription] = useState("");
   const [editedLogo, setEditedLogo] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -89,10 +92,46 @@ const Partnership = () => {
     }
   };
 
+  // Handle adding a new partner
+  const handleAddPartner = async () => {
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/partnership`,
+        {
+          name: editedName,
+          description: editedDescription,
+          logo: editedLogo,
+        }
+      );
+
+      // Immediately add the new partner to local state
+      setPartnersData((prevData) => [...prevData, response.data]);
+      toast.success("Partner added successfully.");
+
+      // Close the modal and clear input fields after adding
+      setModalOpen(false);
+      setEditedName("");
+      setEditedDescription("");
+      setEditedLogo("");
+    } catch (error) {
+      console.error("Error adding partner:", error);
+      toast.error("Failed to add partner.");
+    }
+  };
+
   return (
     <div className="bg-white py-10 relative z-[110] rounded-[20px] font-sora">
-      <div className="p-[5%]">
-        <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-12 items-center text-center justify-center">
+      <div className="p-[3%]">
+        <div className="flex justify-end">
+          <button
+            onClick={() => setModalOpen(true)}
+            className="mb-4 text-xl bg-green-500 text-white rounded-full p-2 flex items-center"
+          >
+            <IoIosAddCircle className="mr-2" /> Add Partner
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-12 items-center text-center justify-center mt-5">
           {partnersData.map((partner) => (
             <div key={partner._id} className="text-center group">
               {editingId === partner._id ? (
@@ -144,30 +183,42 @@ const Partnership = () => {
               )}
 
               <div className="flex justify-center gap-2 opacity-0 group-hover:opacity-100">
-                <button className="text-xl bg-slate-100 hover:bg-green-600 hover:text-white duration-500 rounded-full p-2">
-                  <IoIosAddCircle />
-                </button>
-
                 <button
-                  className="text-xl bg-slate-100 hover:bg-red-500 hover:text-white duration-500 rounded-full p-2"
+                  onClick={() => {
+                    if (editingId === partner._id) {
+                      handleUpdate(partner._id);
+                    } else {
+                      handleEditClick(partner);
+                    }
+                  }}
+                  className="text-xl bg-slate-100 hover:bg-blue-600 hover:text-white duration-500 rounded-full p-2"
+                >
+                  <LiaEditSolid />
+                </button>
+                <button
                   onClick={() => handleDelete(partner._id)}
+                  className="text-xl bg-slate-100 hover:bg-red-600 hover:text-white duration-500 rounded-full p-2"
                 >
                   <RiDeleteBin6Fill />
                 </button>
               </div>
-
-              {editingId === partner._id && (
-                <button
-                  onClick={() => handleUpdate(partner._id)}
-                  className="text-sm text-white bg-blue-500 rounded px-3 py-1 mt-2"
-                >
-                  Save
-                </button>
-              )}
             </div>
           ))}
         </div>
       </div>
+
+      <Modal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onSubmit={handleAddPartner}
+        editedName={editedName}
+        setEditedName={setEditedName}
+        editedDescription={editedDescription}
+        setEditedDescription={setEditedDescription}
+        editedLogo={editedLogo}
+        setEditedLogo={setEditedLogo}
+      />
+
       <ToastContainer />
     </div>
   );
