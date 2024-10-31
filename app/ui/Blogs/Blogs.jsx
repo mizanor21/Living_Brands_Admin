@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { LuClipboardEdit } from "react-icons/lu";
 import BlogModal from "./BlogModal";
@@ -17,6 +17,15 @@ const removeBlog = async (id) => {
 };
 
 const Blogs = ({ blogs }) => {
+  const [data, setData] = useState(null);
+
+  const [isOpenModal, setIsOpenModal] = useState(false);
+
+  const handleOpenModal = (item) => {
+    setIsOpenModal(true);
+    setData(item);
+  };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 gap-y-8 md:gap-y-20">
       {blogs.map((item) => (
@@ -35,8 +44,9 @@ const Blogs = ({ blogs }) => {
               </h2>
               <div className="hidden group-hover:flex gap-3 text-xl">
                 <button
-                  onClick={() =>
-                    document.getElementById("blogModal").showModal()
+                  onClick={
+                    () => handleOpenModal(item)
+                    // document.getElementById("blogModal").showModal()
                   }
                 >
                   <LuClipboardEdit />
@@ -52,7 +62,11 @@ const Blogs = ({ blogs }) => {
           </div>
         </div>
       ))}
-      <BlogModal />
+      <BlogModal
+        isOpen={isOpenModal}
+        onClose={() => setIsOpenModal(false)}
+        data={data}
+      />
     </div>
   );
 };

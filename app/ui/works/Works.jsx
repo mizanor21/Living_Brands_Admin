@@ -2,7 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { LuClipboardEdit } from "react-icons/lu";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import WorkModal from "./WorkModal";
 
 const Works = ({ works }) => {
   const router = useRouter();
@@ -38,6 +40,13 @@ const Works = ({ works }) => {
                 {item?.title}
               </h2>
               <div className="hidden group-hover:flex gap-3">
+                <button
+                  onClick={() =>
+                    document.getElementById("workModal").showModal()
+                  }
+                >
+                  <LuClipboardEdit />
+                </button>
                 <button className="" onClick={() => removeWork(item._id)}>
                   <RiDeleteBin6Line />
                 </button>
@@ -49,6 +58,7 @@ const Works = ({ works }) => {
           </div>
         </div>
       ))}
+      <WorkModal />
     </div>
   );
 };

@@ -1,44 +1,22 @@
 "use client";
-import { PATCH } from "@/app/api/blogs/[id]/route";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/router";
 import React from "react";
 import { useForm } from "react-hook-form";
 
-const BlogModal = ({ isOpen, onClose, data }) => {
-  // console.log(data?.services[0]?.description);
+const WorkModal = () => {
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm();
-  const onSubmit = async (data) => {
-    // PATCH({ data: data, id: data?.id });
-    try {
-      const res = await fetch(`http://localhost:3000/api/blogs/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      console.log(res);
-    } catch (error) {
-      console.error("Error submitting form:", error);
-    }
-  };
-  if (!isOpen) {
-    return null;
-  } else
-    return (
-      <dialog id="blogModal" className="modal " open>
+  const onSubmit = (data) => console.log(data);
+  return (
+    <div>
+      <dialog id="workModal" className="modal ">
         <div className="modal-box max-w-[1000px]">
           <form method="dialog">
             {/* if there is a button in form, it will close the modal */}
-            <button
-              onClick={onClose}
-              className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-            >
+            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
               ✕
             </button>
           </form>
@@ -48,7 +26,6 @@ const BlogModal = ({ isOpen, onClose, data }) => {
                 Title <span className="text-red-600">*</span>
               </label>
               <input
-                defaultValue={data?.title}
                 {...register("title", { required: "Title is required" })}
                 placeholder="Title"
                 aria-invalid={errors.title ? "true" : "false"}
@@ -64,7 +41,6 @@ const BlogModal = ({ isOpen, onClose, data }) => {
                 Details Title <span className="text-red-600">*</span>
               </label>
               <input
-                defaultValue={data?.detailsTitle}
                 {...register("detailsTitle", {
                   required: "Details Title is required",
                 })}
@@ -84,7 +60,6 @@ const BlogModal = ({ isOpen, onClose, data }) => {
                 Service Details <span className="text-red-600">*</span>
               </label>
               <textarea
-                // defaultValue={data?.services[0]?.description}
                 {...register("serviceDetails", {
                   required: "Service Details are required",
                 })}
@@ -104,9 +79,7 @@ const BlogModal = ({ isOpen, onClose, data }) => {
                 Industry <span className="text-red-600">*</span>
               </label>
               <input
-                {...register("industry", {
-                  required: "Industry is required",
-                })}
+                {...register("industry", { required: "Industry is required" })}
                 placeholder="Industry"
                 aria-invalid={errors.industry ? "true" : "false"}
                 className="rounded-lg px-5 py-2 border border-[#125b5c] w-full"
@@ -123,9 +96,7 @@ const BlogModal = ({ isOpen, onClose, data }) => {
                 Services <span className="text-red-600">*</span>
               </label>
               <input
-                {...register("services", {
-                  required: "Services are required",
-                })}
+                {...register("services", { required: "Services are required" })}
                 placeholder="Services"
                 aria-invalid={errors.services ? "true" : "false"}
                 className="rounded-lg px-5 py-2 border border-[#125b5c] w-full"
@@ -163,7 +134,8 @@ const BlogModal = ({ isOpen, onClose, data }) => {
           </form>
         </div>
       </dialog>
-    );
+    </div>
+  );
 };
 
-export default BlogModal;
+export default WorkModal;

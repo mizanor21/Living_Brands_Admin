@@ -28,7 +28,7 @@ export default function BlogsData() {
 
   return (
     <div>
-      <Blogs blogs={blogs} /> {/* Pass blogs instead of works */}
+      <Blogs blogs={blogs} /> Pass blogs instead of works
     </div>
   );
 }
