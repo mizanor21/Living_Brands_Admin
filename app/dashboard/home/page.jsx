@@ -1,11 +1,9 @@
-import HeroData from "@/app/lib/Home/homeData";
 import HeroSection from "@/app/ui/Home/HeroSection";
 
 const Home = async () => {
   return (
     <div className="grid gap-5">
-      {/* <HeroSection /> */}
-      <HeroData />
+      <HeroSection />
     </div>
   );
 };

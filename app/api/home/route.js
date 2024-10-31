@@ -20,7 +20,7 @@ export async function POST(req) {
 export async function GET() {
   await connectToDB();
   const heroes = await HomeHero.find();
-  return NextResponse.json({ heroes });
+  return NextResponse.json(heroes);
 }
 
 export async function DELETE(req) {
