@@ -1,7 +1,6 @@
-// components/Modal.js
 import React from "react";
 
-const Modal = ({
+const PartnerModal = ({
   isOpen,
   onClose,
   onSubmit,
@@ -68,4 +67,4 @@ const Modal = ({
   );
 };
 
-export default Modal;
+export default PartnerModal;

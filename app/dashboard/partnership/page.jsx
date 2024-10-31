@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { IoIosAddCircle } from "react-icons/io";
 import { LiaEditSolid } from "react-icons/lia";
 import { RiDeleteBin6Fill } from "react-icons/ri";
-import Modal from "./Modal";
+import PartnerModal from "./PartnerModal";
 // import Modal from "./components/Modal"; // Adjust the path based on your project structure
 
 const Partnership = () => {
@@ -207,7 +207,7 @@ const Partnership = () => {
         </div>
       </div>
 
-      <Modal
+      <PartnerModal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
         onSubmit={handleAddPartner}
