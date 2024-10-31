@@ -1,9 +1,11 @@
+import DefinesSection from "@/app/ui/Home/Defines";
 import HeroSection from "@/app/ui/Home/HeroSection";
 
 const Home = async () => {
   return (
     <div className="grid gap-5">
       <HeroSection />
+      <DefinesSection />
     </div>
   );
 };
