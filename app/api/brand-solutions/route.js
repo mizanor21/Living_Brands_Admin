@@ -1,29 +1,28 @@
-import { BrandService } from "@/app/lib/BrandAccordion/model";
-import { connectToDB } from "@/app/lib/connectToDB";
-import { Teams } from "@/app/lib/Teams/model";
 import { NextResponse } from "next/server";
+import { BrandSolutions } from "../../lib/BrandSolutions/model";
+import { connectToDB } from "../../lib/connectToDB";
 
 export async function GET() {
   await connectToDB();
-  const data = await BrandService.find();
+  const data = await BrandSolutions.find();
   return NextResponse.json(data);
 }
 
 export async function POST(req) {
   try {
-    const brandServiceData = await req.json();
+    const BrandSolutionsData = await req.json();
 
     // Connect to the database
     await connectToDB();
-    await BrandService.create(brandServiceData);
+    await BrandSolutions.create(BrandSolutionsData);
     return NextResponse.json(
-      { message: "brandService data created" },
+      { message: "BrandSolutions data created" },
       { status: 201 }
     );
   } catch (error) {
-    console.error("Error creating brandService data:", error);
+    console.error("Error creating BrandSolutions data:", error);
     return NextResponse.json(
-      { message: "Failed to create brandService data" },
+      { message: "Failed to create BrandSolutions data" },
       { status: 500 }
     );
   }
@@ -33,22 +32,22 @@ export async function DELETE(req) {
     const url = new URL(req.url);
     const id = url.searchParams.get("id");
     await connectToDB();
-    const deletedBrandService = await BrandService.findByIdAndDelete(id);
-    if (!deletedBrandService) {
+    const deletedBrandSolutions = await BrandSolutions.findByIdAndDelete(id);
+    if (!deletedBrandSolutions) {
       return NextResponse.json(
-        { message: "BrandService data not found" },
+        { message: "BrandSolutions data not found" },
         { status: 404 }
       );
     }
 
     return NextResponse.json(
-      { message: "BrandService data deleted" },
+      { message: "BrandSolutions data deleted" },
       { status: 200 }
     );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { message: "Failed to delete BrandService data" },
+      { message: "Failed to delete BrandSolutions data" },
       { status: 500 }
     );
   }

@@ -1,7 +1,6 @@
-import { BrandService } from "@/app/lib/BrandAccordion/model";
 import { connectToDB } from "@/app/lib/connectToDB";
-import { Teams } from "@/app/lib/Teams/model";
 import { NextResponse } from "next/server";
+import { BrandSolutions } from "../../../lib/BrandSolutions/model";
 
 export async function PATCH(req, { params }) {
   const { id } = params;
@@ -10,7 +9,7 @@ export async function PATCH(req, { params }) {
   await connectToDB();
 
   try {
-    const updatedBrandService = await BrandService.findByIdAndUpdate(
+    const updatedBrandSolutions = await BrandSolutions.findByIdAndUpdate(
       id,
       updateData,
       {
@@ -19,7 +18,7 @@ export async function PATCH(req, { params }) {
       }
     );
 
-    if (!updatedBrandService) {
+    if (!updatedBrandSolutions) {
       return NextResponse.json(
         { message: "team data not found" },
         { status: 404 }
@@ -27,7 +26,7 @@ export async function PATCH(req, { params }) {
     }
 
     return NextResponse.json(
-      { message: "Data Successfully Updated", data: updatedBrandService },
+      { message: "Data Successfully Updated", data: updatedBrandSolutions },
       { status: 200 }
     );
   } catch (error) {
