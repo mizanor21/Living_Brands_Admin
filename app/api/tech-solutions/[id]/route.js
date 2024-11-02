@@ -1,6 +1,5 @@
-import { BrandService } from "@/app/lib/BrandAccordion/model";
 import { connectToDB } from "@/app/lib/connectToDB";
-import { TechService } from "@/app/lib/TechAccordion/model";
+import { TechSolutions } from "@/app/lib/TechSolutions/model";
 import { NextResponse } from "next/server";
 
 export async function PATCH(req, { params }) {
@@ -10,7 +9,7 @@ export async function PATCH(req, { params }) {
   await connectToDB();
 
   try {
-    const updatedTechService = await TechService.findByIdAndUpdate(
+    const updatedTechSolutions = await TechSolutions.findByIdAndUpdate(
       id,
       updateData,
       {
@@ -19,7 +18,7 @@ export async function PATCH(req, { params }) {
       }
     );
 
-    if (!updatedTechService) {
+    if (!updatedTechSolutions) {
       return NextResponse.json(
         { message: "tech data not found" },
         { status: 404 }
@@ -27,7 +26,7 @@ export async function PATCH(req, { params }) {
     }
 
     return NextResponse.json(
-      { message: "Data Successfully Updated", data: updatedTechService },
+      { message: "Data Successfully Updated", data: updatedTechSolutions },
       { status: 200 }
     );
   } catch (error) {
