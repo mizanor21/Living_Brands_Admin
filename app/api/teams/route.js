@@ -4,8 +4,10 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   await connectToDB();
-  const teams = await Teams.find();
-  return NextResponse.json(teams);
+  const data = await Teams.find();
+  const response = NextResponse.json(data);
+  response.headers.set("Access-Control-Allow-Origin", "*");
+  return response;
 }
 
 export async function POST(req) {
