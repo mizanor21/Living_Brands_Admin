@@ -6,7 +6,9 @@ import { NextResponse } from "next/server";
 export async function GET() {
   await connectToDB();
   const teams = await ColorPalettes.find();
-  return NextResponse.json(teams);
+  const response = NextResponse.json(teams);
+  response.headers.set("Access-Control-Allow-Origin", "*");
+  return response;
 }
 
 export async function POST(req) {

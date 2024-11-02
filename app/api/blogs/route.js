@@ -5,7 +5,9 @@ import { NextResponse } from "next/server";
 export async function GET() {
   await connectToDB();
   const blogs = await Blogs.find();
-  return NextResponse.json(blogs);
+  const response = NextResponse.json(blogs);
+  response.headers.set("Access-Control-Allow-Origin", "*");
+  return response;
 }
 
 export async function DELETE(req) {

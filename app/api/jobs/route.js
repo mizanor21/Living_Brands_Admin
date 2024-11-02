@@ -5,7 +5,9 @@ import { NextResponse } from "next/server";
 export async function GET() {
   await connectToDB();
   const jobs = await Jobs.find();
-  return NextResponse.json(jobs);
+  const response = NextResponse.json(jobs);
+  response.headers.set("Access-Control-Allow-Origin", "*");
+  return response;
 }
 
 export async function POST(req) {

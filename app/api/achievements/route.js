@@ -5,8 +5,10 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   await connectToDB();
-  const achievements = await Achievements.find();
-  return NextResponse.json(achievements);
+  const data = await Achievements.find();
+  const response = NextResponse.json(data);
+  response.headers.set("Access-Control-Allow-Origin", "*");
+  return response;
 }
 
 export async function POST(req) {

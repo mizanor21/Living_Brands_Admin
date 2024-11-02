@@ -5,7 +5,9 @@ import { connectToDB } from "../../lib/connectToDB";
 export async function GET() {
   await connectToDB();
   const data = await BrandSolutions.find();
-  return NextResponse.json(data);
+  const response = NextResponse.json(data);
+  response.headers.set("Access-Control-Allow-Origin", "*");
+  return response;
 }
 
 export async function POST(req) {

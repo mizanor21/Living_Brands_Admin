@@ -8,12 +8,7 @@ export async function GET() {
   const data = await Partnership.find();
 
   const response = NextResponse.json(data);
-
-  // Set CORS headers
-  response.headers.set("Access-Control-Allow-Origin", "*"); // Set to "*" or specify your origin
-  response.headers.set("Access-Control-Allow-Methods", "GET, OPTIONS");
-  response.headers.set("Access-Control-Allow-Headers", "Content-Type");
-
+  response.headers.set("Access-Control-Allow-Origin", "*");
   return response;
 }
 
