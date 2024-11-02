@@ -1,6 +1,5 @@
-import { BrandService } from "@/app/lib/BrandAccordion/model";
 import { connectToDB } from "@/app/lib/connectToDB";
-import { MediaService } from "@/app/lib/MediaAccordion/model";
+import { MediaSolutions } from "@/app/lib/MediaSolutions/model";
 import { NextResponse } from "next/server";
 
 export async function PATCH(req, { params }) {
@@ -10,7 +9,7 @@ export async function PATCH(req, { params }) {
   await connectToDB();
 
   try {
-    const updatedMediaService = await MediaService.findByIdAndUpdate(
+    const updatedMediaSolutions = await MediaSolutions.findByIdAndUpdate(
       id,
       updateData,
       {
@@ -19,7 +18,7 @@ export async function PATCH(req, { params }) {
       }
     );
 
-    if (!updatedMediaService) {
+    if (!updatedMediaSolutions) {
       return NextResponse.json(
         { message: "media data not found" },
         { status: 404 }
@@ -27,7 +26,7 @@ export async function PATCH(req, { params }) {
     }
 
     return NextResponse.json(
-      { message: "Data Successfully Updated", data: updatedMediaService },
+      { message: "Data Successfully Updated", data: updatedMediaSolutions },
       { status: 200 }
     );
   } catch (error) {
