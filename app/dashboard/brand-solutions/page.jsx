@@ -46,9 +46,12 @@ const BrandSolutions = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10 lg:mb-20">
         {/* Left Side */}
         <div>
-          <h2 className="text-3xl md:text-4xl lg:text-[48px] text-[#125b5c] font-bold mb-7 md:mb-10">
-            Brand Solutions
-          </h2>
+          <div className="flex justify-between items-center mb-5">
+            <h2 className="text-3xl md:text-4xl lg:text-[48px] text-[#125b5c] font-bold">
+              Brand Solutions
+            </h2>
+            <button className="btn">edit</button>
+          </div>
           <p className="text-[18px] font-normal text-black mb-5 text-justify">
             {data?.shortDescription?.[0]}
           </p>
