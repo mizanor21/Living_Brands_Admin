@@ -5,9 +5,11 @@ import React from "react";
 
 const MenuLink = ({ list }) => {
   const pathname = usePathname();
+  console.log("pathname: ", pathname);
+  console.log("list path: ", list?.path);
   return (
     <Link
-      href={list.path}
+      href={list?.path}
       className={`flex items-center gap-2 bg-gray-900 hover:bg-[#125b5c] group transition-colors duration-500 px-3 py-4 rounded-lg ${
         pathname === list.path ? "bg-[#125b5c]" : ""
       }`}
