@@ -2,12 +2,48 @@ import { connectToDB } from "@/app/lib/connectToDB";
 import { Works } from "@/app/lib/Works/model";
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(req) {
   await connectToDB();
-  const works = await Works.find();
-  const response = NextResponse.json(works);
+  const data = await Works.find();
+  const response = NextResponse.json(data);
   response.headers.set("Access-Control-Allow-Origin", "*");
   return response;
+}
+
+export async function POST(req) {
+  try {
+    const {
+      title,
+      detailsTitle,
+      thumbnail,
+      category,
+      services,
+      serviceDetails,
+      industry,
+      img,
+    } = await req.json();
+
+    await connectToDB();
+
+    await Works.create({
+      title,
+      detailsTitle,
+      thumbnail,
+      category,
+      services,
+      serviceDetails,
+      industry,
+      img,
+    });
+
+    return NextResponse.json({ message: "works created" }, { status: 201 });
+  } catch (error) {
+    console.error("Error creating works:", error);
+    return NextResponse.json(
+      { message: "Failed to create work" },
+      { status: 500 }
+    );
+  }
 }
 
 export async function DELETE(req) {
