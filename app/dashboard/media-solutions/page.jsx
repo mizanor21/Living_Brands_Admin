@@ -123,13 +123,13 @@ const EditModal = ({ data, isOpen, onClose, onSave }) => {
 
         <div className="flex justify-end space-x-4">
           <button
-            className="btn btn-secondary px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300"
+            className="px-6 py-2 text-white font-semibold rounded-full bg-gradient-to-r from-[#125b5c] to-[#17a398] hover:from-[#17a398] hover:to-[#125b5c] focus:outline-none focus:ring-2 focus:ring-[#17a398] focus:ring-offset-2 shadow-md transition-all duration-200"
             onClick={onClose}
           >
             Cancel
           </button>
           <button
-            className="btn btn-primary px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+            className="px-6 py-2 text-white font-semibold rounded-full bg-gradient-to-r from-[#125b5c] to-[#17a398] hover:from-[#17a398] hover:to-[#125b5c] focus:outline-none focus:ring-2 focus:ring-[#17a398] focus:ring-offset-2 shadow-md transition-all duration-200"
             onClick={handleSave}
           >
             Save
@@ -179,8 +179,11 @@ const MediaSolutions = () => {
             <h2 className="text-3xl md:text-4xl lg:text-[48px] text-[#125b5c] font-bold">
               Media Solutions
             </h2>
-            <button className="btn" onClick={handleEditClick}>
-              Edit
+            <button
+              className="px-6 py-2 text-white font-semibold rounded-full bg-gradient-to-r from-[#125b5c] to-[#17a398] hover:from-[#17a398] hover:to-[#125b5c] focus:outline-none focus:ring-2 focus:ring-[#17a398] focus:ring-offset-2 shadow-md transition-all duration-200"
+              onClick={handleEditClick}
+            >
+              Update
             </button>
           </div>
           <p className="text-[18px] font-normal text-black mb-5 text-justify">
