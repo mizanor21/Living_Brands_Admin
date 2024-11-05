@@ -1,9 +1,14 @@
 "use client";
-import React from "react";
-import { MdDashboard } from "react-icons/md";
-import Image from "next/image";
-import Link from "next/link";
+import React, { useState } from "react";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
+import {
+  MdDashboard,
+  MdExpandLess,
+  MdExpandMore,
+  MdSettings,
+} from "react-icons/md"; // Import icons
 import logo from "@/public/assets/logo/logoWhite.png";
 
 const Sidebar = () => {
@@ -11,149 +16,160 @@ const Sidebar = () => {
 
   const menuItems = [
     {
-      category: "Pages",
-      lists: [
-        {
-          title: "Dashboard",
-          path: "/dashboard",
-          icon: <MdDashboard />,
-        },
-        {
-          title: "Achievements",
-          path: "/dashboard/achievements",
-          icon: <MdDashboard />,
-        },
-        {
-          title: "Blogs",
-          path: "/dashboard/blogs",
-          icon: <MdDashboard />,
-        },
-        {
-          title: "Brand Solutions",
-          path: "/dashboard/brand-solutions",
-          icon: <MdDashboard />,
-        },
-        {
-          title: "Career",
-          path: "/dashboard/career",
-          icon: <MdDashboard />,
-        },
-        {
-          title: "Contacts",
-          path: "/dashboard/contacts",
-          icon: <MdDashboard />,
-        },
-        {
-          title: "Home",
-          path: "/dashboard/home",
-          icon: <MdDashboard />,
-        },
-        {
-          title: "How We Work",
-          path: "/dashboard/how-we-works",
-          icon: <MdDashboard />,
-        },
-        {
-          title: "Media Solutions",
-          path: "/dashboard/media-solutions",
-          icon: <MdDashboard />,
-        },
-        {
-          title: "Meet Our Team",
-          path: "/dashboard/meet-our-team",
-          icon: <MdDashboard />,
-        },
-        {
-          title: "Partnership",
-          path: "/dashboard/partnership",
-          icon: <MdDashboard />,
-        },
-        {
-          title: "Tech Solutions",
-          path: "/dashboard/tech-solutions",
-          icon: <MdDashboard />,
-        },
-        {
-          title: "The Edge",
-          path: "/dashboard/the-edge",
-          icon: <MdDashboard />,
-        },
-        {
-          title: "Who We Are",
-          path: "/dashboard/who-we-are",
-          icon: <MdDashboard />,
-        },
-        {
-          title: "Work",
-          path: "/dashboard/work",
-          icon: <MdDashboard />,
-        },
+      title: "Dashboard",
+      path: "/dashboard",
+      icon: <MdDashboard />,
+    },
+    {
+      title: "Home",
+      path: "/dashboard/home",
+      icon: <MdDashboard />,
+    },
+    {
+      title: "Work",
+      path: "/dashboard/work",
+      icon: <MdDashboard />,
+    },
+    {
+      title: "Solutions",
+      subItems: [
+        { title: "Brand Solutions", path: "/dashboard/brand-solutions" },
+        { title: "Media Solutions", path: "/dashboard/media-solutions" },
+        { title: "Tech Solutions", path: "/dashboard/tech-solutions" },
       ],
     },
     {
-      category: "Settings",
-      lists: [
-        {
-          title: "Manage Users",
-          path: "/dashboard/manage-users",
-          icon: <MdDashboard />,
-        },
-        {
-          title: "Settings Option 1",
-          path: "/dashboard/option1",
-          icon: <MdDashboard />,
-        },
-        {
-          title: "Settings Option 2",
-          path: "/dashboard/option2",
-          icon: <MdDashboard />,
-        },
+      title: "About",
+      subItems: [
+        { title: "Who We Are", path: "/dashboard/who-we-are" },
+        { title: "How We Work", path: "/dashboard/how-we-works" },
+        { title: "Our Partnership", path: "/dashboard/partnership" },
+        { title: "Achievements", path: "/dashboard/achievements" },
+        { title: "Meet The Team", path: "/dashboard/meet-our-team" },
+      ],
+    },
+    {
+      title: "Resources",
+      subItems: [
+        { title: "Blogs", path: "/dashboard/blogs" },
+        { title: "The Edge", path: "/dashboard/the-edge" },
+      ],
+    },
+    {
+      title: "Career",
+      path: "/dashboard/career",
+      icon: <MdDashboard />,
+    },
+    {
+      title: "Jobs",
+      path: "/dashboard/jobs",
+      icon: <MdDashboard />,
+    },
+    {
+      title: "Settings",
+      icon: <MdSettings />,
+      subItems: [
+        { title: "Manage Users", path: "/dashboard/manage-users" },
+        { title: "General Settings", path: "/dashboard/general-settings" },
+        { title: "Privacy", path: "/dashboard/privacy" },
       ],
     },
   ];
 
-  const MenuLink = ({ list }) => {
-    const normalizedPath = pathname.replace(/\/+$/, ""); // Remove trailing slash
-    const listPath = list.path.replace(/\/+$/, ""); // Remove trailing slash from list path
-    const isActive = normalizedPath === listPath;
+  const [collapsedSections, setCollapsedSections] = useState({
+    Solutions: true,
+    About: true,
+    Resources: true,
+    Settings: true,
+  });
+
+  const toggleSection = (sectionTitle) => {
+    setCollapsedSections((prevState) => ({
+      ...prevState,
+      [sectionTitle]: !prevState[sectionTitle],
+    }));
+  };
+
+  const MenuLink = ({ item, isSubItem = false }) => {
+    const isActive = pathname === item.path;
 
     return (
       <Link
-        href={list.path}
-        className={`flex items-center gap-2 group transition-colors duration-500 px-3 py-4 rounded-lg ${
+        href={item.path}
+        className={`flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-300 ${
           isActive
-            ? "bg-[#125b5c] text-white"
-            : "bg-gray-900 hover:bg-[#125b5c]"
-        }`}
+            ? "bg-teal-500 text-white"
+            : "text-gray-400 hover:bg-gray-800 hover:text-white"
+        } ${isSubItem ? "ml-8 pl-4 border-l-2 border-gray-700" : ""}`}
       >
-        <span className="text-2xl">{list.icon}</span>
+        {!isSubItem && item.icon && (
+          <span className="text-xl">{item.icon}</span>
+        )}
         <span
-          className={`text-lg font-[500] duration-500 ${
-            isActive ? "ml-1" : "group-hover:ml-1"
+          className={`text-sm ${
+            isSubItem ? "text-gray-300" : "text-base font-medium"
           }`}
         >
-          {list.title}
+          {item.title}
         </span>
       </Link>
     );
   };
 
   return (
-    <div className="min-h-screen">
-      <div className="flex flex-col items-center gap-2 pb-2 border-b">
-        <Image src={logo} alt="Brand Logo" width={80} height={80} />
-        <h2 className="text-3xl font-bold">Admin Panel</h2>
+    <div className="h-screen w-80 bg-gradient-to-b from-gray-900 to-black text-gray-200 p-4 flex flex-col">
+      {/* Logo and Title */}
+      <div className="flex flex-col items-center mb-8 border-b border-gray-700 pb-4">
+        <Image src={logo} alt="Brand Logo" width={50} height={50} />
+        <h2 className="text-xl font-semibold mt-2">Admin Panel</h2>
       </div>
-      <ul>
-        {menuItems.map((item, i) => (
-          <li key={i} className="flex flex-col gap-2">
-            <span className="text-2xl font-bold mt-5">{item.category}</span>
-            {item.lists.map((list, j) => (
-              <MenuLink key={j} list={list} />
-            ))}
-          </li>
+
+      {/* Menu Items */}
+      <div className="flex-1 overflow-y-auto space-y-4">
+        {menuItems.map((item, index) => (
+          <div key={index} className="space-y-1">
+            {/* Direct Links */}
+            {item.path ? (
+              <MenuLink item={item} />
+            ) : (
+              <div>
+                {/* Collapsible Section Headers */}
+                <div
+                  onClick={() => toggleSection(item.title)}
+                  className="flex items-center justify-between cursor-pointer text-gray-500 font-semibold uppercase px-4 text-sm tracking-wide hover:text-white transition-all duration-300"
+                >
+                  <div className="flex items-center gap-3">
+                    {item.icon && <span className="text-lg">{item.icon}</span>}
+                    <span>{item.title}</span>
+                  </div>
+                  {collapsedSections[item.title] ? (
+                    <MdExpandMore className="text-lg" />
+                  ) : (
+                    <MdExpandLess className="text-lg" />
+                  )}
+                </div>
+
+                {/* Collapsible Sub-items with Smooth Transition */}
+                <div
+                  className={`${
+                    collapsedSections[item.title]
+                      ? "max-h-0 overflow-hidden"
+                      : "max-h-screen"
+                  } transition-all duration-300 ease-in-out`}
+                >
+                  {item.subItems && (
+                    <div className="mt-2 space-y-1">
+                      {item.subItems.map((subItem, subIndex) => (
+                        <MenuLink key={subIndex} item={subItem} isSubItem />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };
