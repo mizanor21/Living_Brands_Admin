@@ -5,9 +5,7 @@ import Modal from "react-modal";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-// Configure modal root
-Modal.setAppElement("#root");
-
+// Set up the modal after the DOM has loaded
 const JobCircular = () => {
   const [jobs, setJobs] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -19,8 +17,11 @@ const JobCircular = () => {
     phone: "",
   });
 
-  // Fetch jobs from API
+  // Set modal root to document.body to avoid server-side rendering issues
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      Modal.setAppElement(document.body);
+    }
     fetchJobs();
   }, []);
 
@@ -29,26 +30,24 @@ const JobCircular = () => {
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_API_URL}/api/jobs`
       );
+      console.log("Fetched jobs:", response.data); // Log fetched data
       setJobs(response.data);
     } catch (error) {
       toast.error("Failed to fetch jobs!");
-      console.error(error);
+      console.error("Error fetching jobs:", error.message);
     }
   };
 
-  // Handle input change for job data
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
   };
 
-  // Handle input change for applicant data
   const handleApplicantChange = (e) => {
     const { name, value } = e.target;
-    setApplicant({ ...applicant, [name]: value });
+    setApplicant((prevApplicant) => ({ ...prevApplicant, [name]: value }));
   };
 
-  // Open modal with job data for editing or viewing
   const openModal = (job = null) => {
     if (job) {
       setFormData(job);
@@ -65,53 +64,49 @@ const JobCircular = () => {
     setApplicant({ name: "", email: "", phone: "" });
   };
 
-  // Add new job
   const addJob = async () => {
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/api/jobs`,
         formData
       );
-      setJobs([...jobs, response.data]);
+      setJobs((prevJobs) => [...prevJobs, response.data]);
       toast.success("Job added successfully!");
       closeModal();
     } catch (error) {
       toast.error("Failed to add job!");
-      console.error(error);
+      console.error("Error adding job:", error.message);
     }
   };
 
-  // Update existing job
   const updateJob = async () => {
     try {
       const response = await axios.patch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/jobs/${formData._id}`,
         formData
       );
-      setJobs(
-        jobs.map((job) => (job._id === formData._id ? response.data : job))
+      setJobs((prevJobs) =>
+        prevJobs.map((job) => (job._id === formData._id ? response.data : job))
       );
       toast.success("Job updated successfully!");
       closeModal();
     } catch (error) {
       toast.error("Failed to update job!");
-      console.error(error);
+      console.error("Error updating job:", error.message);
     }
   };
 
-  // Delete job
   const deleteJob = async (id) => {
     try {
       await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/jobs/${id}`);
-      setJobs(jobs.filter((job) => job._id !== id));
+      setJobs((prevJobs) => prevJobs.filter((job) => job._id !== id));
       toast.success("Job deleted successfully!");
     } catch (error) {
       toast.error("Failed to delete job!");
-      console.error(error);
+      console.error("Error deleting job:", error.message);
     }
   };
 
-  // Submit applicant info
   const submitApplicant = async () => {
     try {
       await axios.post(
@@ -122,7 +117,7 @@ const JobCircular = () => {
       setApplicant({ name: "", email: "", phone: "" });
     } catch (error) {
       toast.error("Failed to submit applicant info!");
-      console.error(error);
+      console.error("Error submitting applicant info:", error.message);
     }
   };
 
@@ -147,8 +142,12 @@ const JobCircular = () => {
             <h3 className="text-xl font-semibold text-gray-800">
               {job.jobTitle}
             </h3>
-            <p className="text-gray-600">{job.company.name}</p>
-            <p className="text-gray-500">{job.company.location}</p>
+            <p className="text-gray-600">
+              {job.company?.name || "Company name unavailable"}
+            </p>
+            <p className="text-gray-500">
+              {job.company?.location || "Location unavailable"}
+            </p>
             <button
               onClick={() => openModal(job)}
               className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
@@ -190,14 +189,17 @@ const JobCircular = () => {
         <label className="block mb-2">Company Name</label>
         <input
           type="text"
-          name="company.name"
+          name="companyName"
           value={formData.company?.name || ""}
-          onChange={handleInputChange}
+          onChange={(e) =>
+            setFormData((prevFormData) => ({
+              ...prevFormData,
+              company: { ...prevFormData.company, name: e.target.value },
+            }))
+          }
           className="w-full mb-4 px-3 py-2 border rounded"
           readOnly={!isEditing}
         />
-
-        {/* Additional Job Details Fields */}
 
         {isEditing ? (
           <button

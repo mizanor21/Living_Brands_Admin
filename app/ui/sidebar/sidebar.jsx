@@ -46,7 +46,7 @@ const Sidebar = () => {
       title: "About",
       subItems: [
         { title: "Who We Are", path: "/dashboard/who-we-are" },
-        { title: "How We Work", path: "/dashboard/how-we-works" },
+        // { title: "How We Work", path: "/dashboard/how-we-works" },
         { title: "Our Partnership", path: "/dashboard/partnership" },
         { title: "Achievements", path: "/dashboard/achievements" },
         { title: "Meet The Team", path: "/dashboard/meet-our-team" },
