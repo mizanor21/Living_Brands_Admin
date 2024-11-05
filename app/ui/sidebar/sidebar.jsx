@@ -61,7 +61,7 @@ const Sidebar = () => {
     },
     {
       title: "Color Palate",
-      path: "/dashboard/career",
+      path: "/dashboard/color-palette",
       icon: <MdColorLens />,
     },
     {
