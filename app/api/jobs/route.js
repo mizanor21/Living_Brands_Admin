@@ -1,33 +1,22 @@
 import { connectToDB } from "@/app/lib/connectToDB";
-import { Jobs } from "@/app/lib/jobs/model";
+import { JobCircular } from "@/app/lib/jobs/model";
 import { NextResponse } from "next/server";
 
 export async function GET() {
   await connectToDB();
-  const jobs = await Jobs.find();
-  const response = NextResponse.json(jobs);
+  const data = await JobCircular.find();
+  const response = NextResponse.json(data);
   response.headers.set("Access-Control-Allow-Origin", "*");
   return response;
 }
 
 export async function POST(req) {
   try {
-    const {
-      title,
-      location,
-      experience,
-      jobType,
-      date,
-      isActive = true,
-    } = await req.json();
+    const edgeData = await req.json();
 
-    // Connect to the database
     await connectToDB();
-
-    // Create a new job document
-    await Jobs.create({ title, location, experience, jobType, date, isActive });
-
-    return NextResponse.json({ message: "Job data created" }, { status: 201 });
+    await JobCircular.create(edgeData);
+    return NextResponse.json({ message: "job data created" }, { status: 201 });
   } catch (error) {
     console.error("Error creating job data:", error);
     return NextResponse.json(
@@ -41,7 +30,7 @@ export async function DELETE(req) {
     const url = new URL(req.url);
     const id = url.searchParams.get("id");
     await connectToDB();
-    const deletedJob = await Jobs.findByIdAndDelete(id);
+    const deletedJob = await JobCircular.findByIdAndDelete(id);
     if (!deletedJob) {
       return NextResponse.json(
         { message: "Job data not found" },

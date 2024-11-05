@@ -1,5 +1,5 @@
 import { connectToDB } from "@/app/lib/connectToDB";
-import { Jobs } from "@/app/lib/jobs/model";
+import { JobCircular } from "@/app/lib/jobs/model";
 import { NextResponse } from "next/server";
 
 export async function PATCH(req, { params }) {
@@ -9,7 +9,7 @@ export async function PATCH(req, { params }) {
   await connectToDB();
 
   try {
-    const updatedJob = await Jobs.findByIdAndUpdate(id, updateData, {
+    const updatedJob = await JobCircular.findByIdAndUpdate(id, updateData, {
       new: true, // Returns the updated document
       runValidators: true, // Ensures model validation
     });
@@ -37,7 +37,7 @@ export async function PATCH(req, { params }) {
 export async function GET(req, { params }) {
   const { id } = params;
   await connectToDB();
-  const job = await Jobs.findOne({ _id: id });
+  const job = await JobCircular.findOne({ _id: id });
   if (!job) {
     return NextResponse.json(
       { message: "Job data not found" },
