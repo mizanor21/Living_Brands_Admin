@@ -4,10 +4,14 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import {
+  MdColorLens,
   MdDashboard,
   MdExpandLess,
   MdExpandMore,
+  MdHome,
   MdSettings,
+  MdWork,
+  MdWorkspaces,
 } from "react-icons/md"; // Import icons
 import logo from "@/public/assets/logo/logoWhite.png";
 
@@ -23,12 +27,12 @@ const Sidebar = () => {
     {
       title: "Home",
       path: "/dashboard/home",
-      icon: <MdDashboard />,
+      icon: <MdHome />,
     },
     {
       title: "Work",
       path: "/dashboard/work",
-      icon: <MdDashboard />,
+      icon: <MdWorkspaces />,
     },
     {
       title: "Solutions",
@@ -56,14 +60,14 @@ const Sidebar = () => {
       ],
     },
     {
-      title: "Career",
+      title: "Color Palate",
       path: "/dashboard/career",
-      icon: <MdDashboard />,
+      icon: <MdColorLens />,
     },
     {
       title: "Jobs",
       path: "/dashboard/jobs",
-      icon: <MdDashboard />,
+      icon: <MdWork />,
     },
     {
       title: "Settings",
