@@ -66,7 +66,8 @@ const DashboardUI = () => {
               <FaUser className="text-[#135c5d]" />
             </div>
             <p className="text-gray-700">
-              New user <span className="font-bold">[John Doe]</span> registered.
+              New user <span className="font-bold">Mahabub Jamil</span>{" "}
+              registered.
             </p>
           </li>
           <li className="flex items-center space-x-4">
