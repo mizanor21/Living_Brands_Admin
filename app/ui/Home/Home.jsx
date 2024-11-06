@@ -41,8 +41,8 @@ const Home = () => {
       <ToastContainer />
 
       <HeroSection data={heroSection} id="672acdb3167e8afc7894cdd9" />
-      <DefinesSection data={defineUsSection} />
-      <ElevateSection data={elevateSection} />
+      <DefinesSection data={defineUsSection} id="672acdb3167e8afc7894cdd9" />
+      <ElevateSection data={elevateSection} id="672acdb3167e8afc7894cdd9" />
     </div>
   );
 };
