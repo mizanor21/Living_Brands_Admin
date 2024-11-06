@@ -24,13 +24,16 @@ const CreateWorkModal = ({ modalId }) => {
   const onSubmit = async (data) => {
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:3000/api/works", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/works`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
 
       const result = await response.json();
       if (response.ok) {
