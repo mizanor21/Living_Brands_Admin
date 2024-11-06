@@ -2,6 +2,8 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { MdNotificationsActive } from "react-icons/md";
+import { CgProfile } from "react-icons/cg";
+import Link from "next/link";
 
 const Nav = () => {
   const router = useRouter(); // Initialize the router for redirection
@@ -26,7 +28,7 @@ const Nav = () => {
               <span className="badge badge-sm indicator-item">8</span>
             </div>
           </div>
-          <div
+          {/* <div
             tabIndex={0}
             className="card card-compact dropdown-content bg-gray-200 z-[1] mt-5 w-52 shadow"
           >
@@ -37,7 +39,7 @@ const Nav = () => {
                 <button className="btn btn-primary btn-block">View cart</button>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="dropdown dropdown-end">
           <div
@@ -45,11 +47,12 @@ const Nav = () => {
             role="button"
             className="btn btn-ghost btn-circle avatar"
           >
-            <div className="w-10 rounded-full">
-              <img
+            <div className="rounded-full">
+              <CgProfile className="text-2xl" />
+              {/* <img
                 alt="User Avatar"
                 src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-              />
+              /> */}
             </div>
           </div>
           <ul
@@ -63,7 +66,7 @@ const Nav = () => {
               </a>
             </li>
             <li>
-              <a>Settings</a>
+              <Link href={"/signup"}>Create New User</Link>
             </li>
             <li>
               <a onClick={handleLogout}>Logout</a> {/* Logout action */}
