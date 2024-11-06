@@ -1,10 +1,9 @@
 // HeroSection.js
 "use client";
 import React, { useEffect, useState } from "react";
-
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; // Import toast styles
+import "react-toastify/dist/ReactToastify.css";
 import DefinesSection from "./Defines";
 import ElevateSection from "./ElevateSction";
 import HeroSection from "./HeroSection";
