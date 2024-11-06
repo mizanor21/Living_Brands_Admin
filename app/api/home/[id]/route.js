@@ -4,16 +4,26 @@ import { NextResponse } from "next/server";
 
 export async function PATCH(req, { params }) {
   const { id } = params;
-  const updateData = await req.json();
+
+  // Parse JSON data from the request body
+  let updateData;
+  try {
+    updateData = await req.json();
+  } catch (error) {
+    console.error("Error parsing JSON:", error);
+    return NextResponse.json({ message: "Invalid JSON data" }, { status: 400 });
+  }
 
   await connectToDB();
 
   try {
+    // Attempt to find and update the document by ID
     const updatedHome = await Home.findByIdAndUpdate(id, updateData, {
       new: true, // Returns the updated document
       runValidators: true, // Ensures model validation
     });
 
+    // Check if document was found
     if (!updatedHome) {
       return NextResponse.json(
         { message: "Home data not found" },
@@ -21,44 +31,16 @@ export async function PATCH(req, { params }) {
       );
     }
 
+    // Successful update
     return NextResponse.json(
       { message: "Data Successfully Updated", data: updatedHome },
       { status: 200 }
     );
   } catch (error) {
-    console.error(error);
+    console.error("Error updating data:", error);
     return NextResponse.json(
-      { message: "Failed to update Home data" },
+      { message: "Failed to update Home data", error: error.message },
       { status: 500 }
     );
   }
 }
-
-export async function GET(req, { params }) {
-  const { id } = params;
-  await connectToDB();
-  const home = await Home.findOne({ _id: id });
-  if (!home) {
-    return NextResponse.json(
-      { message: "Home data not found" },
-      { status: 404 }
-    );
-  }
-  return NextResponse.json({ home }, { status: 200 });
-}
-
-// export async function PUT(req, { params }) {
-//   const { id } = params;
-//   const { title, shortDescription, img, isActive } = await req.json();
-//   await connectToDB();
-//   await Home.findByIdAndUpdate(id, {
-//     title,
-//     shortDescription,
-//     img,
-//     isActive,
-//   });
-//   return NextResponse.json(
-//     { message: "Data Successfully Updated" },
-//     { status: 200 }
-//   );
-// }

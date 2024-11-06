@@ -40,7 +40,7 @@ const Home = () => {
     <div className="grid gap-5">
       <ToastContainer />
 
-      <HeroSection data={heroSection} />
+      <HeroSection data={heroSection} id="672acdb3167e8afc7894cdd9" />
       <DefinesSection data={defineUsSection} />
       <ElevateSection data={elevateSection} />
     </div>

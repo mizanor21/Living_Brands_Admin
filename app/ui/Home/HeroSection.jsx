@@ -1,28 +1,59 @@
 import { BorderBeam } from "@/components/ui/border-beam";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // Import the CSS for toast styles
 
-const HeroSection = ({ data }) => {
+const HeroSection = ({ data, id }) => {
+  console.log("Received data:", data); // Log the initial data received as a prop
+  console.log("Received id:", id); // Log the id received as a prop
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
-  const onSubmit = async (data) => {
+    reset,
+  } = useForm({
+    defaultValues: {
+      title: data?.title || "",
+      shortDescription: data?.shortDescription || "",
+    },
+  });
+
+  useEffect(() => {
+    console.log("Updating form values with new data"); // Log whenever data is updated
+    reset({
+      title: data?.title || "",
+      shortDescription: data?.shortDescription || "",
+    });
+  }, [data, reset]);
+
+  // Frontend patch request without file upload
+  const onSubmit = async (formData) => {
     try {
-      await axios.patch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/home/672acdb3167e8afc7894cdd9`,
-        data,
+      const payload = {
+        "heroSection.title": formData.title,
+        "heroSection.shortDescription": formData.shortDescription,
+      };
+
+      const response = await axios.patch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/home/${id}`,
+        payload,
         {
           headers: { "Content-Type": "application/json" },
         }
       );
-      toast.success("Hero data updated successfully!"); // Show success notification
+
+      console.log("Data updated successfully:", response.data);
+      toast.success("Data updated successfully!"); // Success notification
     } catch (error) {
-      console.error("Error updating hero data:", error);
-      toast.error("Failed to update hero data."); // Show error notification
+      console.error(
+        "Error updating data:",
+        error.response?.data || error.message
+      );
+      toast.error("Failed to update data."); // Error notification
     }
   };
 
@@ -32,22 +63,24 @@ const HeroSection = ({ data }) => {
         {error.message}
       </small>
     );
+
   return (
     <div>
+      <ToastContainer /> {/* Toast container to display notifications */}
       <div className="relative rounded-lg bg-white p-[2%] shadow-md">
         <div className="flex items-center justify-between mb-5">
           <h3 className="font-bold uppercase">Hero Section</h3>
         </div>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
           <div className="grid grid-cols-3 gap-5">
             <div className="w-full">
               <label>
                 Title <span className="text-red-600">*</span>
               </label>
               <textarea
-                defaultValue={data?.title}
                 {...register("title", { required: "Title is required" })}
                 placeholder="Title"
+                defaultValue={data?.title || ""}
                 className="rounded-lg px-5 py-2 border border-b-4 border-[#125b5c] w-full min-h-[100px]"
               />
               {renderError(errors.title)}
@@ -57,11 +90,11 @@ const HeroSection = ({ data }) => {
                 Short Description <span className="text-red-600">*</span>
               </label>
               <textarea
-                defaultValue={data?.shortDescription}
                 {...register("shortDescription", {
                   required: "Short Description is required",
                 })}
                 placeholder="Short Description"
+                defaultValue={data?.shortDescription || ""}
                 className="rounded-lg px-5 py-2 border border-b-4 border-[#125b5c] w-full min-h-[100px]"
               />
               {renderError(errors.shortDescription)}
@@ -71,9 +104,7 @@ const HeroSection = ({ data }) => {
                 Hero Image <span className="text-red-600">*</span>
               </label>
               <input
-                {...register("heroImage", {
-                  required: "Hero Image is required",
-                })}
+                {...register("heroImage")}
                 type="file"
                 className="rounded-lg px-5 py-2 border border-b-4 border-[#125b5c] w-full"
               />
