@@ -7,7 +7,9 @@ const DashboardUI = () => {
       {/* Welcome Message */}
       <div className="p-6 bg-white rounded-xl shadow-md">
         <h2 className="text-3xl font-bold text-gray-800">Welcome back</h2>
-        <p className="text-gray-600 mt-2">Here's what's happening today:</p>
+        <p className="text-gray-600 mt-2">
+          Here&apos;s what&apos;s happening today:
+        </p>
       </div>
 
       {/* Statistics */}
