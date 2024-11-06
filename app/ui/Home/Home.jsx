@@ -37,7 +37,7 @@ const Home = () => {
   } = heros[0] || {};
 
   return (
-    <div>
+    <div className="grid gap-5">
       <ToastContainer />
 
       <HeroSection data={heroSection} />

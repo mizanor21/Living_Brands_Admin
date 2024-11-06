@@ -18,23 +18,9 @@ const DefinesSection = ({ data }) => {
 
   return (
     <div>
-      {/* Defines Section  */}
-
-      {/* {dataDefines.map((data, i) => ( */}
-      <div className="relative rounded-lg bg-white p-[2%]">
+      <div className="relative rounded-lg bg-white shadow-md p-[2%]">
         <div className="flex items-center justify-between mb-5">
           <h3 className="font-bold uppercase ">Defines Section </h3>
-          <div className="flex gap-1">
-            <button className="text-xl">
-              <IoIosAddCircle />
-            </button>
-            <button className="text-xl">
-              <LiaEditSolid />
-            </button>
-            <button className="text-xl">
-              <RiDeleteBin6Fill />
-            </button>
-          </div>
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="">
           <div className="grid grid-cols-3 gap-5">
@@ -135,7 +121,6 @@ const DefinesSection = ({ data }) => {
         </form>
         <BorderBeam size={250} duration={12} delay={9} />
       </div>
-      {/* ))} */}
     </div>
   );
 };

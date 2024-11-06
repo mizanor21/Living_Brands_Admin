@@ -17,20 +17,9 @@ const ElevateSection = ({ data }) => {
 
   return (
     <div>
-      <div className="relative rounded-lg bg-white p-[2%]">
+      <div className="relative rounded-lg bg-white shadow-md p-[2%]">
         <div className="flex items-center justify-between mb-5">
           <h3 className="font-bold uppercase ">Elevate Section </h3>
-          <div className="flex gap-1">
-            <button className="text-xl">
-              <IoIosAddCircle />
-            </button>
-            <button className="text-xl">
-              <LiaEditSolid />
-            </button>
-            <button className="text-xl">
-              <RiDeleteBin6Fill />
-            </button>
-          </div>
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="">
           <div className="grid grid-cols-3 gap-5">

@@ -40,17 +40,6 @@ const HeroSection = ({ data }) => {
       <div className="relative rounded-lg bg-white p-[2%] shadow-md">
         <div className="flex items-center justify-between mb-5">
           <h3 className="font-bold uppercase">Hero Section</h3>
-          <div className="flex gap-1">
-            <button className="text-xl">
-              <IoIosAddCircle />
-            </button>
-            <button className="text-xl">
-              <LiaEditSolid />
-            </button>
-            <button className="text-xl">
-              <RiDeleteBin6Fill />
-            </button>
-          </div>
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid grid-cols-3 gap-5">
