@@ -1,7 +1,18 @@
+"use client";
 import React from "react";
+import { useRouter } from "next/navigation";
 import { MdNotificationsActive } from "react-icons/md";
 
 const Nav = () => {
+  const router = useRouter(); // Initialize the router for redirection
+
+  const handleLogout = () => {
+    // Clear the token from localStorage
+    localStorage.removeItem("token");
+    // Redirect to the login page
+    router.push("/");
+  };
+
   return (
     <div className="navbar bg-gray-200 rounded-md">
       <div className="flex-1">
@@ -36,7 +47,7 @@ const Nav = () => {
           >
             <div className="w-10 rounded-full">
               <img
-                alt="Tailwind CSS Navbar component"
+                alt="User Avatar"
                 src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
               />
             </div>
@@ -55,7 +66,7 @@ const Nav = () => {
               <a>Settings</a>
             </li>
             <li>
-              <a>Logout</a>
+              <a onClick={handleLogout}>Logout</a> {/* Logout action */}
             </li>
           </ul>
         </div>
