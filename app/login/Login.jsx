@@ -2,12 +2,14 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const router = useRouter(); // Initialize the router
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -15,7 +17,7 @@ const Login = () => {
     try {
       const res = await axios.post("/api/login", { email, password });
       localStorage.setItem("token", res.data.token);
-      console.log("Login successful:", res.data.user);
+      router.push("/dashboard"); // Redirect to /dashboard after successful login
     } catch (error) {
       setError(error.response?.data?.error || "Login failed");
     }
