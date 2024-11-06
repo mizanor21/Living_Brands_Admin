@@ -3,9 +3,6 @@ import { Button } from "@/components/ui/button";
 import axios from "axios";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { IoIosAddCircle } from "react-icons/io";
-import { LiaEditSolid } from "react-icons/lia";
-import { RiDeleteBin6Fill } from "react-icons/ri";
 
 const HeroSection = ({ data }) => {
   const {

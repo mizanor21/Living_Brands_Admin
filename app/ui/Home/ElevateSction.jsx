@@ -3,9 +3,6 @@ import { BorderBeam } from "@/components/ui/border-beam";
 import { Button } from "@/components/ui/button";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { IoIosAddCircle } from "react-icons/io";
-import { LiaEditSolid } from "react-icons/lia";
-import { RiDeleteBin6Fill } from "react-icons/ri";
 
 const ElevateSection = ({ data }) => {
   const {
