@@ -72,11 +72,7 @@ const Sidebar = () => {
     {
       title: "Settings",
       icon: <MdSettings />,
-      subItems: [
-        { title: "Manage Users", path: "/dashboard/manage-users" },
-        { title: "General Settings", path: "/dashboard/general-settings" },
-        { title: "Privacy", path: "/dashboard/privacy" },
-      ],
+      subItems: [{ title: "Manage Users", path: "/dashboard/manage-users" }],
     },
   ];
 
