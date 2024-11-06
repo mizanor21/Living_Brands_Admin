@@ -9,7 +9,7 @@ const removeBlog = async (id) => {
   const confirm = window.confirm(`Are you sure you want to delete blog?`);
 
   if (confirm) {
-    await fetch(`http://localhost:3000/api/blogs?id=${id}`, {
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/blogs?id=${id}`, {
       method: "DELETE",
     });
     alert("Successfully Blog deleted!");

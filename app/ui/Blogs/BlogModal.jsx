@@ -15,13 +15,16 @@ const BlogModal = ({ isOpen, onClose, data }) => {
   const onSubmit = async (data) => {
     // PATCH({ data: data, id: data?.id });
     try {
-      const res = await fetch(`http://localhost:3000/api/blogs/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/blogs/${id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
       console.log(res);
     } catch (error) {
       console.error("Error submitting form:", error);

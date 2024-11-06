@@ -9,10 +9,13 @@ export default function BlogsData() {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/blogs", {
-          // Change endpoint to your blogs API
-          cache: "no-store",
-        });
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/blogs`,
+          {
+            // Change endpoint to your blogs API
+            cache: "no-store",
+          }
+        );
         const data = await response.json();
         setBlogs(data); // Assuming your API returns an array of blogs
       } catch (error) {
