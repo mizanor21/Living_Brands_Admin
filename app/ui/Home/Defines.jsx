@@ -7,8 +7,8 @@ import { IoIosAddCircle } from "react-icons/io";
 import { LiaEditSolid } from "react-icons/lia";
 import { RiDeleteBin6Fill } from "react-icons/ri";
 
-const DefinesSection = ({ dataDefines }) => {
-  console.log(dataDefines);
+const DefinesSection = ({ data }) => {
+  console.log(data);
   const {
     register,
     formState: { errors },
@@ -44,7 +44,7 @@ const DefinesSection = ({ dataDefines }) => {
               </label>
               <br />
               <textarea
-                // defaultValue={data?.heading}
+                defaultValue={data?.heading}
                 {...register("heading", { required: true })}
                 placeholder="Heading"
                 aria-invalid={errors.heading ? "true" : "false"}
@@ -65,7 +65,7 @@ const DefinesSection = ({ dataDefines }) => {
               </label>
               <br />
               <textarea
-                // defaultValue={data?.title}
+                defaultValue={data?.title}
                 {...register("title", { required: true })}
                 placeholder="Title"
                 aria-invalid={errors.title ? "true" : "false"}
@@ -86,7 +86,7 @@ const DefinesSection = ({ dataDefines }) => {
               </label>
               <br />
               <textarea
-                // defaultValue={data.shortDescription}
+                defaultValue={data.shortDescription}
                 {...register("shortDescription", {
                   required: "Short Description is required",
                 })}
@@ -141,3 +141,23 @@ const DefinesSection = ({ dataDefines }) => {
 };
 
 export default DefinesSection;
+
+// Defines.js
+// import React from "react";
+
+// const DefinesSection = ({ data }) => {
+//   if (!data || Object.keys(data).length === 0) {
+//     return <div>No data available for Defines Section</div>;
+//   }
+
+//   return (
+//     <div className="defines-section">
+//       <h3>{data.heading || "Default Heading"}</h3>
+//       <p>{data.title || "Default Title"}</p>
+//       <p>{data.shortDescription || "Default Description"}</p>
+//       {data.image && <img src={data?.image} alt="Defines Section Image" />}
+//     </div>
+//   );
+// };
+
+// export default DefinesSection;

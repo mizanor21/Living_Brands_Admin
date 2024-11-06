@@ -1,5 +1,5 @@
 import { connectToDB } from "@/app/lib/connectToDB";
-import { HomeHero } from "@/app/lib/Home/models";
+import { Home } from "@/app/lib/Home/models";
 import { NextResponse } from "next/server";
 
 export async function PATCH(req, { params }) {
@@ -9,26 +9,26 @@ export async function PATCH(req, { params }) {
   await connectToDB();
 
   try {
-    const updatedHero = await HomeHero.findByIdAndUpdate(id, updateData, {
+    const updatedHome = await Home.findByIdAndUpdate(id, updateData, {
       new: true, // Returns the updated document
       runValidators: true, // Ensures model validation
     });
 
-    if (!updatedHero) {
+    if (!updatedHome) {
       return NextResponse.json(
-        { message: "Hero data not found" },
+        { message: "Home data not found" },
         { status: 404 }
       );
     }
 
     return NextResponse.json(
-      { message: "Data Successfully Updated", data: updatedHero },
+      { message: "Data Successfully Updated", data: updatedHome },
       { status: 200 }
     );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { message: "Failed to update hero data" },
+      { message: "Failed to update Home data" },
       { status: 500 }
     );
   }
@@ -37,21 +37,21 @@ export async function PATCH(req, { params }) {
 export async function GET(req, { params }) {
   const { id } = params;
   await connectToDB();
-  const hero = await HomeHero.findOne({ _id: id });
-  if (!hero) {
+  const home = await Home.findOne({ _id: id });
+  if (!home) {
     return NextResponse.json(
-      { message: "Hero data not found" },
+      { message: "Home data not found" },
       { status: 404 }
     );
   }
-  return NextResponse.json({ hero }, { status: 200 });
+  return NextResponse.json({ home }, { status: 200 });
 }
 
 // export async function PUT(req, { params }) {
 //   const { id } = params;
 //   const { title, shortDescription, img, isActive } = await req.json();
 //   await connectToDB();
-//   await HomeHero.findByIdAndUpdate(id, {
+//   await Home.findByIdAndUpdate(id, {
 //     title,
 //     shortDescription,
 //     img,

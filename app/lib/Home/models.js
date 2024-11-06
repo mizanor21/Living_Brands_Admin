@@ -1,40 +1,63 @@
 import mongoose, { Schema } from "mongoose";
 
-const heroSchema = new Schema(
-  {
-    title: String,
-    shortDescription: String,
-    img: String,
-    isActive: Boolean,
+const homepageSchema = new mongoose.Schema({
+  heroSection: {
+    title: { type: String, required: true },
+    shortDescription: { type: String, required: true },
+    image: { type: String },
+    isActive: { type: Boolean, default: true },
+    lastUpdated: { type: Date, default: Date.now },
   },
-  { timestamps: true }
-);
+  videoSection: {
+    videoURL: { type: String },
+    isActive: { type: Boolean, default: true },
+  },
+  elevateSection: {
+    title: { type: String, required: true },
+    shortDescription: { type: String },
+    isActive: { type: Boolean, default: true },
+  },
+  defineUsSection: {
+    heading: { type: String },
+    title: { type: String, required: true },
+    shortDescription: { type: String },
+    image: { type: String },
+    isActive: { type: Boolean, default: true },
+  },
+  slideshowSection: {
+    slides: [
+      {
+        imageURL: { type: String },
+      },
+    ],
+  },
+  solutionSection: {
+    solutions: [
+      {
+        id: { type: String, required: true },
+        path: { type: String },
+        title: { type: String, required: true },
+        content: { type: String },
+      },
+    ],
+  },
+  journeySection: {
+    title: { type: String },
+    image: { type: String },
+  },
+  brandSection: {
+    reviews: [
+      {
+        imageURL: { type: String },
+      },
+    ],
+    partnerBrands: [
+      {
+        logoURL: { type: String },
+      },
+    ],
+  },
+});
 
-// const elevateSchema = new Schema(
-//   {
-//     title: String,
-//     shortDescription: String,
-//     isActive: Boolean,
-//   },
-//   { timestamps: true }
-// );
-
-// const definesSchema = new Schema(
-//   {
-//     heading: String,
-//     title: String,
-//     shortDescription: String,
-//     img: String,
-//     isActive: Boolean,
-//   },
-//   { timestamps: true }
-// );
-
-export const HomeHero =
-  mongoose.models.HomeHero || mongoose.model("HomeHero", heroSchema);
-
-// export const HomeElevate =
-//   mongoose.models.HomeElevate || mongoose.model("HomeElevate", elevateSchema);
-
-// export const HomeDefines =
-//   mongoose.models.HomeDefines || mongoose.model("HomeDefines", definesSchema);
+export const Home =
+  mongoose.models.Home || mongoose.model("Home", homepageSchema);
