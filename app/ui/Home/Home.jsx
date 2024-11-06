@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import DefinesSection from "./Defines";
 import ElevateSection from "./ElevateSction";
 import HeroSection from "./HeroSection";
+import JourneySection from "./Journey";
 
 const Home = () => {
   const [heros, setHeros] = useState([]);
@@ -43,6 +44,7 @@ const Home = () => {
       <HeroSection data={heroSection} id="672acdb3167e8afc7894cdd9" />
       <DefinesSection data={defineUsSection} id="672acdb3167e8afc7894cdd9" />
       <ElevateSection data={elevateSection} id="672acdb3167e8afc7894cdd9" />
+      <JourneySection data={journeySection} id="672acdb3167e8afc7894cdd9" />
     </div>
   );
 };
