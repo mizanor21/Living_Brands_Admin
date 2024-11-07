@@ -120,7 +120,7 @@ const Partnership = () => {
   };
 
   return (
-    <div className="bg-white py-10 relative z-[110] rounded-[20px] font-sora">
+    <div className="bg-white py-10 rounded-[20px] font-sora">
       <div className="p-[3%]">
         <div className="flex justify-end">
           <button
