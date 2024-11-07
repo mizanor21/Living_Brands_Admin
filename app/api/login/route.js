@@ -3,7 +3,15 @@ import { connectToDB } from "@/app/lib/connectToDB";
 import { User } from "@/app/lib/Login/modal";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { NextResponse } from "next/server";
 
+export async function GET() {
+  await connectToDB();
+  const data = await User.find();
+  const response = NextResponse.json(data);
+  response.headers.set("Access-Control-Allow-Origin", "*");
+  return response;
+}
 export async function POST(req) {
   await connectToDB();
   const { email, password } = await req.json();
