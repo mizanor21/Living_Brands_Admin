@@ -12,7 +12,7 @@ const DashboardUI = () => {
       try {
         const token = localStorage.getItem("token"); // Assumes the token is stored in localStorage after login
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/login`,
+          `${process.env.NEXT_PUBLIC_API_URL}/api/users`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
