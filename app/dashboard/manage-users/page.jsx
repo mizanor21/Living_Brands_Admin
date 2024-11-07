@@ -6,6 +6,8 @@ import {
   FaUserCircle,
 } from "react-icons/fa";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ManageUser = () => {
   const [users, setUsers] = useState([]);
@@ -30,21 +32,15 @@ const ManageUser = () => {
     fetchUsers();
   }, []);
 
-  // Handle user deletion
+  // Handle user deletion with toast notification
   const handleDelete = async (userId) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this user?"
-    );
-    if (!confirmed) return;
-
     try {
-      await axios.delete(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/users/${userId}`
-      );
-      setUsers(users.filter((user) => user._id !== userId));
-    } catch (err) {
-      console.error("Failed to delete user:", err);
-      alert("Failed to delete user. Please try again.");
+      const response = await axios.delete(`/api/users?id=${userId}`);
+      setUsers(users.filter((user) => user._id !== userId)); // Update UI
+      toast.success(response.data.message || "User successfully deleted!");
+    } catch (error) {
+      console.error("Failed to delete user:", error);
+      toast.error("Failed to delete user. Please try again.");
     }
   };
 
@@ -66,6 +62,13 @@ const ManageUser = () => {
 
   return (
     <div className="p-6 min-h-screen bg-gradient-to-b from-blue-50 to-indigo-100">
+      {/* Toast Notification Container */}
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+      />
+
       <h1 className="text-4xl font-extrabold text-indigo-700 mb-8 text-center">
         Manage Users
       </h1>
