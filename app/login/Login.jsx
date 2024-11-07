@@ -10,17 +10,21 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false); // Loading state for spinner
   const router = useRouter();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError(null);
+    setLoading(true); // Start loading when login is initiated
     try {
       const res = await axios.post("/api/login", { email, password });
       localStorage.setItem("token", res.data.token);
       router.push("/dashboard");
     } catch (error) {
       setError(error.response?.data?.error || "Login failed");
+    } finally {
+      setLoading(false); // Stop loading after login process is complete
     }
   };
 
@@ -90,9 +94,32 @@ const Login = () => {
             </div>
             <button
               type="submit"
-              className="w-full py-2 text-lg font-semibold text-white bg-[#135c5d] rounded-lg hover:bg-[#104d4e] focus:outline-none focus:ring-4 focus:ring-[#135c5d] transition-transform transform hover:scale-105"
+              className="w-full py-2 text-lg font-semibold text-white bg-[#135c5d] rounded-lg hover:bg-[#104d4e] focus:outline-none focus:ring-4 focus:ring-[#135c5d] transition-transform transform hover:scale-105 flex items-center justify-center"
+              disabled={loading} // Disable button when loading
             >
-              Login
+              {loading ? (
+                <svg
+                  className="w-5 h-5 mr-2 text-white animate-spin"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                  ></path>
+                </svg>
+              ) : null}
+              {loading ? "Logging in..." : "Login"}
             </button>
             <div className="text-center text-gray-300 text-sm">
               User login panel.
