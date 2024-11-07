@@ -24,6 +24,9 @@ export async function POST(req) {
     });
   }
 
+  // Console log to check if JWT_SECRET is loaded correctly
+  console.log("JWT Secret:", process.env.JWT_SECRET);
+
   // Create JWT token
   const token = jwt.sign(
     { userId: user._id, role: user.role },
