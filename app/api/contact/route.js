@@ -17,7 +17,7 @@ export async function POST(req) {
     // Add CORS headers
     response.headers.set(
       "Access-Control-Allow-Origin",
-      "https://living-brands-v1.vercel.app"
+      "https://living-brands-admin.vercel.app/api/contact"
     ); // Set to your frontend domain
     response.headers.set("Access-Control-Allow-Methods", "POST, OPTIONS");
     response.headers.set("Access-Control-Allow-Headers", "Content-Type");
