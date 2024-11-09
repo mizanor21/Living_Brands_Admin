@@ -37,7 +37,7 @@ export async function OPTIONS() {
   const response = new NextResponse(null, { status: 204 });
   response.headers.set(
     "Access-Control-Allow-Origin",
-    "https://living-brands-v1.vercel.app"
+    "https://living-brands-admin.vercel.app/api/contact"
   );
   response.headers.set("Access-Control-Allow-Methods", "POST, OPTIONS");
   response.headers.set("Access-Control-Allow-Headers", "Content-Type");
