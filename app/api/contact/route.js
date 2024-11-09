@@ -17,10 +17,18 @@ export async function POST(req) {
     // Connect to the database
     await connectToDB();
     await Contact.create(contactData);
-    return NextResponse.json(
-      { message: "contact data created" },
+
+    const response = NextResponse.json(
+      { message: "Contact data created" },
       { status: 201 }
     );
+
+    // Add CORS headers
+    response.headers.set("Access-Control-Allow-Origin", "*"); // Change '*' to 'http://localhost:3000' for specific origin
+    response.headers.set("Access-Control-Allow-Methods", "POST, OPTIONS");
+    response.headers.set("Access-Control-Allow-Headers", "Content-Type");
+
+    return response;
   } catch (error) {
     console.error("Error creating contact data:", error);
     return NextResponse.json(
