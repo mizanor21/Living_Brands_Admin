@@ -1,11 +1,13 @@
 import { connectToDB } from "@/app/lib/connectToDB";
-import { ContactImg } from "@/app/lib/ContactImg/model";
+import { Contact } from "@/app/lib/Contact/model";
 import { NextResponse } from "next/server";
 
 export async function GET() {
   await connectToDB();
-  const contactImg = await ContactImg.find();
-  return NextResponse.json(contactImg);
+  const data = await Contact.find();
+  const response = NextResponse.json(data);
+  response.headers.set("Access-Control-Allow-Origin", "*");
+  return response;
 }
 
 export async function POST(req) {
@@ -14,7 +16,7 @@ export async function POST(req) {
 
     // Connect to the database
     await connectToDB();
-    await ContactImg.create(contactData);
+    await Contact.create(contactData);
     return NextResponse.json(
       { message: "contact data created" },
       { status: 201 }
@@ -32,22 +34,22 @@ export async function DELETE(req) {
     const url = new URL(req.url);
     const id = url.searchParams.get("id");
     await connectToDB();
-    const deletedContactImg = await ContactImg.findByIdAndDelete(id);
-    if (!deletedContactImg) {
+    const deletedContact = await Contact.findByIdAndDelete(id);
+    if (!deletedContact) {
       return NextResponse.json(
-        { message: "ContactImg data not found" },
+        { message: "Contact data not found" },
         { status: 404 }
       );
     }
 
     return NextResponse.json(
-      { message: "ContactImg data deleted" },
+      { message: "Contact data deleted" },
       { status: 200 }
     );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { message: "Failed to delete ContactImg data" },
+      { message: "Failed to delete Contact data" },
       { status: 500 }
     );
   }
