@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Modal = ({ isVisible, onClose, onSave }) => {
   if (!isVisible) return null;
 
-  // Initialize state to match schema structure
   const [formData, setFormData] = useState({
     jobId: "",
     title: "",
@@ -87,16 +88,19 @@ const Modal = ({ isVisible, onClose, onSave }) => {
 
   const handleSaveClick = async () => {
     try {
-      await axios.post("/api/jobs", formData); // POST to API
-      onSave(formData); // Call onSave function to pass data back
-      onClose(); // Close modal after saving
+      await axios.post("/api/jobs", formData);
+      onSave(formData);
+      toast.success("Job saved successfully!");
+      onClose();
     } catch (error) {
+      toast.error("Error saving job. Please try again.");
       console.error("Error saving job:", error);
     }
   };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+      <ToastContainer />
       <div className="bg-white rounded-lg shadow-lg w-full max-w-lg h-full max-h-[80vh] flex flex-col">
         {/* Modal Header */}
         <div className="flex justify-between items-center p-4 border-b">
@@ -117,23 +121,26 @@ const Modal = ({ isVisible, onClose, onSave }) => {
             name="jobId"
             value={formData.jobId}
             onChange={handleInputChange}
-            placeholder="Job ID"
+            placeholder="Job ID (Required)"
             className="border p-2 rounded mb-4 w-full"
+            required
           />
           <input
             type="text"
             name="title"
             value={formData.title}
             onChange={handleInputChange}
-            placeholder="Job Title"
+            placeholder="Job Title (Required)"
             className="border p-2 rounded mb-4 w-full"
+            required
           />
           <textarea
             name="description"
             value={formData.description}
             onChange={handleInputChange}
-            placeholder="Job Description"
+            placeholder="Job Description (Required)"
             className="border p-2 rounded mb-4 w-full"
+            required
           />
 
           {/* Company Information */}
@@ -141,8 +148,9 @@ const Modal = ({ isVisible, onClose, onSave }) => {
             type="text"
             value={formData.company.name}
             onChange={(e) => handleNestedInputChange(e, "company", "name")}
-            placeholder="Company Name"
+            placeholder="Company Name (Required)"
             className="border p-2 rounded mb-4 w-full"
+            required
           />
           <input
             type="text"
@@ -157,8 +165,9 @@ const Modal = ({ isVisible, onClose, onSave }) => {
             onChange={(e) =>
               handleDeepNestedInputChange(e, "company", "address", "street")
             }
-            placeholder="Street Address"
+            placeholder="Street Address (Required)"
             className="border p-2 rounded mb-4 w-full"
+            required
           />
           <input
             type="text"
@@ -166,8 +175,9 @@ const Modal = ({ isVisible, onClose, onSave }) => {
             onChange={(e) =>
               handleDeepNestedInputChange(e, "company", "address", "city")
             }
-            placeholder="City"
+            placeholder="City (Required)"
             className="border p-2 rounded mb-4 w-full"
+            required
           />
           <input
             type="text"
@@ -184,8 +194,9 @@ const Modal = ({ isVisible, onClose, onSave }) => {
             onChange={(e) =>
               handleDeepNestedInputChange(e, "company", "address", "postalCode")
             }
-            placeholder="Postal Code"
+            placeholder="Postal Code (Required)"
             className="border p-2 rounded mb-4 w-full"
+            required
           />
           <input
             type="text"
@@ -193,8 +204,9 @@ const Modal = ({ isVisible, onClose, onSave }) => {
             onChange={(e) =>
               handleDeepNestedInputChange(e, "company", "address", "country")
             }
-            placeholder="Country"
+            placeholder="Country (Required)"
             className="border p-2 rounded mb-4 w-full"
+            required
           />
 
           {/* Location Information */}
