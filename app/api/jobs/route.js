@@ -12,15 +12,37 @@ export async function GET() {
 
 export async function POST(req) {
   try {
+    // Parse the request JSON body
     const edgeData = await req.json();
 
+    // Database connection
     await connectToDB();
-    await JobCircular.create(edgeData);
-    return NextResponse.json({ message: "job data created" }, { status: 201 });
+
+    // Optional: Perform server-side validation if needed
+    if (
+      !edgeData.jobId ||
+      !edgeData.title ||
+      !edgeData.company ||
+      !edgeData.salary
+    ) {
+      return NextResponse.json(
+        { message: "Missing required fields" },
+        { status: 400 }
+      );
+    }
+
+    // Create a new job circular document in MongoDB
+    const job = await JobCircular.create(edgeData);
+    return NextResponse.json(
+      { message: "Job data created successfully", job },
+      { status: 201 }
+    );
   } catch (error) {
     console.error("Error creating job data:", error);
+
+    // Send error response with detailed error message
     return NextResponse.json(
-      { message: "Failed to create job data" },
+      { message: "Failed to create job data", error: error.message },
       { status: 500 }
     );
   }

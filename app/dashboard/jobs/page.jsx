@@ -1,259 +1,182 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Modal from "react-modal";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { BsBriefcase, BsGlobe, BsThreeDotsVertical } from "react-icons/bs";
+import { FiCalendar } from "react-icons/fi";
+import Modal from "./Modal";
 
-// Set up the modal after the DOM has loaded
-const JobCircular = () => {
+const JobsUI = () => {
   const [jobs, setJobs] = useState([]);
+  const [editMode, setEditMode] = useState(null);
+  const [hoveredJob, setHoveredJob] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState({});
-  const [applicant, setApplicant] = useState({
-    name: "",
-    email: "",
-    phone: "",
-  });
 
-  // Set modal root to document.body to avoid server-side rendering issues
+  const handleOpenModalClick = () => {
+    setIsModalOpen(true); // Open modal on button click
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false); // Close modal
+  };
+
+  const handleSaveJob = (newJobData) => {
+    setJobs([...jobs, newJobData]); // Add the new job to the jobs list
+  };
+
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      Modal.setAppElement(document.body);
-    }
+    const fetchJobs = async () => {
+      try {
+        const response = await axios.get("/api/jobs");
+        setJobs(response.data);
+      } catch (error) {
+        console.error("Error fetching jobs:", error);
+      }
+    };
     fetchJobs();
   }, []);
 
-  const fetchJobs = async () => {
+  const handleEditClick = (job) => {
+    setEditMode(job._id);
+  };
+
+  const handleDeleteJob = async (id) => {
+    const isConfirmed = window.confirm(
+      "Are you sure you want to delete this job?"
+    );
+    if (!isConfirmed) return;
+
     try {
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/jobs`
-      );
-      console.log("Fetched jobs:", response.data); // Log fetched data
-      setJobs(response.data);
-    } catch (error) {
-      toast.error("Failed to fetch jobs!");
-      console.error("Error fetching jobs:", error.message);
-    }
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
-  };
-
-  const handleApplicantChange = (e) => {
-    const { name, value } = e.target;
-    setApplicant((prevApplicant) => ({ ...prevApplicant, [name]: value }));
-  };
-
-  const openModal = (job = null) => {
-    if (job) {
-      setFormData(job);
-      setIsEditing(true);
-    } else {
-      setFormData({});
-      setIsEditing(false);
-    }
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setApplicant({ name: "", email: "", phone: "" });
-  };
-
-  const addJob = async () => {
-    try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/jobs`,
-        formData
-      );
-      setJobs((prevJobs) => [...prevJobs, response.data]);
-      toast.success("Job added successfully!");
-      closeModal();
-    } catch (error) {
-      toast.error("Failed to add job!");
-      console.error("Error adding job:", error.message);
-    }
-  };
-
-  const updateJob = async () => {
-    try {
-      const response = await axios.patch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/jobs/${formData._id}`,
-        formData
-      );
-      setJobs((prevJobs) =>
-        prevJobs.map((job) => (job._id === formData._id ? response.data : job))
-      );
-      toast.success("Job updated successfully!");
-      closeModal();
-    } catch (error) {
-      toast.error("Failed to update job!");
-      console.error("Error updating job:", error.message);
-    }
-  };
-
-  const deleteJob = async (id) => {
-    try {
-      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/jobs/${id}`);
+      await axios.delete(`/api/jobs/?id=${id}`);
       setJobs((prevJobs) => prevJobs.filter((job) => job._id !== id));
-      toast.success("Job deleted successfully!");
     } catch (error) {
-      toast.error("Failed to delete job!");
-      console.error("Error deleting job:", error.message);
-    }
-  };
-
-  const submitApplicant = async () => {
-    try {
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/jobs/${formData._id}/applicants`,
-        applicant
-      );
-      toast.success("Applicant info submitted!");
-      setApplicant({ name: "", email: "", phone: "" });
-    } catch (error) {
-      toast.error("Failed to submit applicant info!");
-      console.error("Error submitting applicant info:", error.message);
+      console.error("Error deleting job:", error);
     }
   };
 
   return (
-    <div className="container mx-auto p-5">
-      <ToastContainer />
-      <div className="flex justify-between items-center mb-5">
+    <div className="p-6 bg-gray-100 min-h-screen">
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold mb-8">Job Listings</h1>
         <button
-          onClick={() => openModal()}
-          className="px-4 py-2 bg-green-500 text-white font-semibold rounded hover:bg-green-600"
+          onClick={handleOpenModalClick}
+          className="bg-blue-500 text-white p-2 rounded"
         >
           Add New Job
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* Modal for Adding a New Job */}
+      <Modal
+        isVisible={isModalOpen}
+        onClose={handleModalClose}
+        onSave={handleSaveJob}
+      />
+
+      <div className="grid gap-6">
         {jobs.map((job) => (
           <div
             key={job._id}
-            className="border p-4 bg-white shadow rounded-lg hover:shadow-lg transition"
+            className="p-6 border rounded-lg shadow-lg bg-white flex flex-col gap-4 relative"
+            style={{
+              borderLeft: `4px solid ${
+                job.location.type === "Remote" ? "#a3bffa" : "#ffe4e1"
+              }`,
+            }}
+            onMouseEnter={() => setHoveredJob(job._id)}
+            onMouseLeave={() => setHoveredJob(null)}
           >
-            <h3 className="text-xl font-semibold text-gray-800">
-              {job.jobTitle}
-            </h3>
-            <p className="text-gray-600">
-              {job.company?.name || "Company name unavailable"}
-            </p>
-            <p className="text-gray-500">
-              {job.company?.location || "Location unavailable"}
-            </p>
-            <button
-              onClick={() => openModal(job)}
-              className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-            >
-              View Details
-            </button>
-            <button
-              onClick={() => deleteJob(job._id)}
-              className="mt-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-            >
-              Delete Job
-            </button>
+            {editMode === job._id ? (
+              <div className="w-full">
+                <input
+                  type="text"
+                  name="jobTitle"
+                  value={job.jobTitle}
+                  className="border p-2 rounded mb-2 w-full"
+                  placeholder="Job Title"
+                  readOnly
+                />
+                {/* Other read-only fields can be added here */}
+              </div>
+            ) : (
+              <div className="w-full flex flex-col gap-4">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <p className="text-sm text-gray-500 flex items-center gap-2">
+                      <BsBriefcase />
+                      Type: {job.location.type} • Experience:{" "}
+                      {job.experienceLevel}
+                    </p>
+                    <h2 className="text-xl font-semibold mt-1">{job.title}</h2>
+                    <p className="text-gray-700 font-medium">
+                      {job.salary.currency} {job.salary.min}-{job.salary.max} /{" "}
+                      {job.salary.frequency}
+                    </p>
+                  </div>
+                  <div className="relative">
+                    <BsThreeDotsVertical className="text-gray-400 hover:text-gray-700 cursor-pointer text-xl" />
+                    {hoveredJob === job._id && (
+                      <div className="absolute right-0 top-6 bg-white shadow-lg rounded-lg border p-2 w-28">
+                        <button
+                          // onClick={() => handleEditClick(job)}
+                          className="block text-gray-700 w-full text-left p-2 hover:bg-gray-100"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleDeleteJob(job._id)}
+                          className="block text-gray-700 w-full text-left p-2 hover:bg-gray-100"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex justify-between items-center text-sm">
+                  <p className="flex items-center gap-2 text-gray-600">
+                    <BsGlobe />
+                    {job.location.city}, {job.location.country}
+                  </p>
+                  <p className="text-gray-500">{job.department}</p>
+                </div>
+
+                <div className="text-sm text-gray-600">
+                  <p>
+                    <strong>Company:</strong> {job.company.name}
+                  </p>
+                  <p>
+                    <strong>Responsibilities:</strong>{" "}
+                    {job.responsibilities.join(", ")}
+                  </p>
+                  <p>
+                    <strong>Benefits:</strong> {job.benefits.join(", ")}
+                  </p>
+                </div>
+
+                <div className="flex items-center text-sm text-gray-500">
+                  <FiCalendar />
+                  <p className="ml-2">
+                    Application Deadline:{" "}
+                    {new Date(
+                      job.applicationDetails.deadline
+                    ).toLocaleDateString()}
+                  </p>
+                </div>
+
+                <button
+                  className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full font-semibold hover:bg-blue-200"
+                  onClick={() => handleEditClick(job)}
+                >
+                  Apply Now
+                </button>
+              </div>
+            )}
           </div>
         ))}
       </div>
-
-      {/* Job Details and Edit Modal */}
-      <Modal
-        isOpen={isModalOpen}
-        onRequestClose={closeModal}
-        contentLabel="Job Details"
-        className="bg-white p-8 rounded-lg shadow-lg max-w-lg mx-auto"
-        overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-      >
-        <h2 className="text-2xl font-bold mb-4">
-          {isEditing ? "Edit Job" : "Job Details"}
-        </h2>
-
-        <label className="block mb-2">Job Title</label>
-        <input
-          type="text"
-          name="jobTitle"
-          value={formData.jobTitle || ""}
-          onChange={handleInputChange}
-          className="w-full mb-4 px-3 py-2 border rounded"
-          readOnly={!isEditing}
-        />
-
-        <label className="block mb-2">Company Name</label>
-        <input
-          type="text"
-          name="companyName"
-          value={formData.company?.name || ""}
-          onChange={(e) =>
-            setFormData((prevFormData) => ({
-              ...prevFormData,
-              company: { ...prevFormData.company, name: e.target.value },
-            }))
-          }
-          className="w-full mb-4 px-3 py-2 border rounded"
-          readOnly={!isEditing}
-        />
-
-        {isEditing ? (
-          <button
-            onClick={updateJob}
-            className="px-4 py-2 bg-teal-500 text-white rounded mt-4"
-          >
-            Update Job
-          </button>
-        ) : (
-          <div>
-            <label className="block mt-8 mb-2 font-semibold text-lg">
-              Applicant Information
-            </label>
-            <input
-              type="text"
-              name="name"
-              value={applicant.name}
-              onChange={handleApplicantChange}
-              placeholder="Name"
-              className="w-full mb-4 px-3 py-2 border rounded"
-            />
-            <input
-              type="email"
-              name="email"
-              value={applicant.email}
-              onChange={handleApplicantChange}
-              placeholder="Email"
-              className="w-full mb-4 px-3 py-2 border rounded"
-            />
-            <input
-              type="tel"
-              name="phone"
-              value={applicant.phone}
-              onChange={handleApplicantChange}
-              placeholder="Phone"
-              className="w-full mb-4 px-3 py-2 border rounded"
-            />
-            <button
-              onClick={submitApplicant}
-              className="px-4 py-2 bg-teal-500 text-white rounded"
-            >
-              Submit Applicant
-            </button>
-          </div>
-        )}
-        <button
-          onClick={closeModal}
-          className="px-4 py-2 mt-4 bg-gray-400 text-white rounded"
-        >
-          Close
-        </button>
-      </Modal>
     </div>
   );
 };
 
-export default JobCircular;
+export default JobsUI;

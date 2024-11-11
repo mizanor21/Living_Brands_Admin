@@ -1,53 +1,64 @@
 import mongoose from "mongoose";
 
 const JobCircularSchema = new mongoose.Schema({
-  jobId: {
-    type: String,
-    unique: true,
-    required: true,
-  },
-  jobTitle: {
-    type: String,
-    required: true,
-  },
+  jobId: { type: String, required: true, unique: true },
+  title: { type: String, required: true },
   company: {
-    name: String,
-    logoUrl: String,
-    location: String,
+    name: { type: String, required: true },
     website: String,
-    industry: String,
-    size: String,
-  },
-  jobDetails: {
-    employmentType: String,
-    experienceLevel: String,
-    salaryRange: {
-      min: Number,
-      max: Number,
-      currency: String,
-      frequency: String,
+    address: {
+      street: String,
+      city: String,
+      state: String,
+      postalCode: String,
+      country: String,
     },
-    applicationDeadline: Date,
-    postingDate: Date,
   },
-  jobDescription: [String],
-  qualifications: {
+  location: {
+    type: {
+      type: String,
+      // enum: ["Remote", "On-site", "Hybrid"],
+    },
+    city: String,
+    country: String,
+  },
+  employmentType: {
+    type: String,
+    enum: ["Full-time", "Part-time", "Contract", "Temporary", "Internship"],
+  },
+  experienceLevel: {
+    type: String,
+    enum: ["Entry-level", "Mid-level", "Senior-level", "Director"],
+  },
+  industry: String,
+  department: String,
+  openings: { type: Number, min: 1 },
+  description: String,
+  responsibilities: [String],
+  requirements: {
     education: String,
     experience: String,
     skills: [String],
-    preferredQualifications: [String],
+    languages: [String],
+  },
+  salary: {
+    // currency: String,
+    min: Number,
+    max: Number,
+    // frequency: {
+    //   type: String,
+    //   enum: ["Hourly", "Weekly", "Monthly", "Yearly"],
+    // },
   },
   benefits: [String],
-  applicationInstructions: {
-    applyLink: String,
-    applyEmail: String,
-    instructions: [String],
+  applicationDetails: {
+    deadline: Date,
+    link: String,
+    contactEmail: { type: String, match: /^\S+@\S+\.\S+$/ },
+    instructions: String,
   },
-  contactInformation: {
-    recruiterName: String,
-    recruiterEmail: String,
-    phone: String,
-  },
+  // postingDate: { type: Date, default: Date.now },
+  keywords: [String],
 });
 
 export const JobCircular =
