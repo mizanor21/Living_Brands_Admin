@@ -1,16 +1,17 @@
-// HeroSection.js
+// Home.js
 "use client";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DefinesSection from "./Defines";
-import ElevateSection from "./ElevateSction";
 import HeroSection from "./HeroSection";
 import JourneySection from "./Journey";
+import ElevateSection from "./ElevateSction";
 
 const Home = () => {
   const [heros, setHeros] = useState([]);
+  const [fetchError, setFetchError] = useState(null); // Added state to handle fetch errors
 
   useEffect(() => {
     const fetchHerosData = async () => {
@@ -21,11 +22,13 @@ const Home = () => {
         setHeros(data || []);
       } catch (error) {
         setFetchError("Failed to load hero data. Please try again later.");
+        toast.error("Failed to load hero data. Please try again later."); // Show error toast
       }
     };
     fetchHerosData();
   }, []);
 
+  // Destructure sections with default empty objects to avoid undefined errors
   const {
     heroSection = {},
     videoSection = {},
@@ -41,10 +44,19 @@ const Home = () => {
     <div className="grid gap-5">
       <ToastContainer />
 
-      <HeroSection data={heroSection} id="672acdb3167e8afc7894cdd9" />
-      <DefinesSection data={defineUsSection} id="672acdb3167e8afc7894cdd9" />
-      <ElevateSection data={elevateSection} id="672acdb3167e8afc7894cdd9" />
-      <JourneySection data={journeySection} id="672acdb3167e8afc7894cdd9" />
+      {fetchError ? (
+        <p className="text-red-600">{fetchError}</p>
+      ) : (
+        <>
+          <HeroSection data={heroSection} id="672acdb3167e8afc7894cdd9" />
+          <DefinesSection
+            data={defineUsSection}
+            id="672acdb3167e8afc7894cdd9"
+          />
+          <ElevateSection data={elevateSection} id="672acdb3167e8afc7894cdd9" />
+          <JourneySection data={journeySection} id="672acdb3167e8afc7894cdd9" />
+        </>
+      )}
     </div>
   );
 };
