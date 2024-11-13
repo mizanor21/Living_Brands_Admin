@@ -7,7 +7,6 @@ import Modal from "./Modal";
 
 const JobsUI = () => {
   const [jobs, setJobs] = useState([]);
-  const [editMode, setEditMode] = useState(null);
   const [hoveredJob, setHoveredJob] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -34,10 +33,6 @@ const JobsUI = () => {
     };
     fetchJobs();
   }, []);
-
-  const handleEditClick = (job) => {
-    setEditMode(job._id);
-  };
 
   const handleDeleteJob = async (id) => {
     const isConfirmed = window.confirm(
@@ -72,7 +67,7 @@ const JobsUI = () => {
         onSave={handleSaveJob}
       />
 
-      <div className="grid gap-6">
+      <div className="grid grid-cols-2 gap-6">
         {jobs.map((job) => (
           <div
             key={job._id}
@@ -85,93 +80,72 @@ const JobsUI = () => {
             onMouseEnter={() => setHoveredJob(job._id)}
             onMouseLeave={() => setHoveredJob(null)}
           >
-            {editMode === job._id ? (
-              <div className="w-full">
-                <input
-                  type="text"
-                  name="jobTitle"
-                  value={job.jobTitle}
-                  className="border p-2 rounded mb-2 w-full"
-                  placeholder="Job Title"
-                  readOnly
-                />
-                {/* Other read-only fields can be added here */}
+            <div className="w-full flex flex-col gap-4">
+              <div className="flex justify-between items-center">
+                <div>
+                  <p className="text-sm text-gray-500 flex items-center gap-2">
+                    <BsBriefcase />
+                    Type: {job.location.type} • Experience:{" "}
+                    {job.experienceLevel}
+                  </p>
+                  <h2 className="text-xl font-semibold mt-1">{job.title}</h2>
+                  <p className="text-gray-700 font-medium">
+                    {job.salary.currency} {job.salary.min}-{job.salary.max} /{" "}
+                    {job.salary.frequency}
+                  </p>
+                </div>
+                <div className="relative">
+                  <BsThreeDotsVertical className="text-gray-400 hover:text-gray-700 cursor-pointer text-xl" />
+                  {hoveredJob === job._id && (
+                    <div className="absolute right-0 top-6 bg-white shadow-lg rounded-lg border p-2 w-28">
+                      <button
+                        // onClick={() => handleEditClick(job)}
+                        className="block text-gray-700 w-full text-left p-2 hover:bg-gray-100"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDeleteJob(job._id)}
+                        className="block text-gray-700 w-full text-left p-2 hover:bg-gray-100"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
-            ) : (
-              <div className="w-full flex flex-col gap-4">
-                <div className="flex justify-between items-center">
-                  <div>
-                    <p className="text-sm text-gray-500 flex items-center gap-2">
-                      <BsBriefcase />
-                      Type: {job.location.type} • Experience:{" "}
-                      {job.experienceLevel}
-                    </p>
-                    <h2 className="text-xl font-semibold mt-1">{job.title}</h2>
-                    <p className="text-gray-700 font-medium">
-                      {job.salary.currency} {job.salary.min}-{job.salary.max} /{" "}
-                      {job.salary.frequency}
-                    </p>
-                  </div>
-                  <div className="relative">
-                    <BsThreeDotsVertical className="text-gray-400 hover:text-gray-700 cursor-pointer text-xl" />
-                    {hoveredJob === job._id && (
-                      <div className="absolute right-0 top-6 bg-white shadow-lg rounded-lg border p-2 w-28">
-                        <button
-                          // onClick={() => handleEditClick(job)}
-                          className="block text-gray-700 w-full text-left p-2 hover:bg-gray-100"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => handleDeleteJob(job._id)}
-                          className="block text-gray-700 w-full text-left p-2 hover:bg-gray-100"
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                </div>
 
-                <div className="flex justify-between items-center text-sm">
-                  <p className="flex items-center gap-2 text-gray-600">
-                    <BsGlobe />
-                    {job.location.city}, {job.location.country}
-                  </p>
-                  <p className="text-gray-500">{job.department}</p>
-                </div>
-
-                <div className="text-sm text-gray-600">
-                  <p>
-                    <strong>Company:</strong> {job.company.name}
-                  </p>
-                  <p>
-                    <strong>Responsibilities:</strong>{" "}
-                    {job.responsibilities.join(", ")}
-                  </p>
-                  <p>
-                    <strong>Benefits:</strong> {job.benefits.join(", ")}
-                  </p>
-                </div>
-
-                <div className="flex items-center text-sm text-gray-500">
-                  <FiCalendar />
-                  <p className="ml-2">
-                    Application Deadline:{" "}
-                    {new Date(
-                      job.applicationDetails.deadline
-                    ).toLocaleDateString()}
-                  </p>
-                </div>
-
-                <button
-                  className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full font-semibold hover:bg-blue-200"
-                  onClick={() => handleEditClick(job)}
-                >
-                  Apply Now
-                </button>
+              <div className="flex justify-between items-center text-sm">
+                <p className="flex items-center gap-2 text-gray-600">
+                  <BsGlobe />
+                  {job.location.city}, {job.location.country}
+                </p>
+                <p className="text-gray-500">{job.department}</p>
               </div>
-            )}
+
+              <div className="text-sm text-gray-600">
+                <p>
+                  <strong>Company:</strong> {job.company.name}
+                </p>
+                <p>
+                  <strong>Responsibilities:</strong>{" "}
+                  {job.responsibilities.join(", ")}
+                </p>
+                <p>
+                  <strong>Benefits:</strong> {job.benefits.join(", ")}
+                </p>
+              </div>
+
+              <div className="flex items-center text-sm text-gray-500">
+                <FiCalendar />
+                <p className="ml-2">
+                  Application Deadline:{" "}
+                  {new Date(
+                    job.applicationDetails.deadline
+                  ).toLocaleDateString()}
+                </p>
+              </div>
+            </div>
           </div>
         ))}
       </div>
