@@ -10,7 +10,9 @@ export async function GET(req, { params }) {
   if (!work) {
     return NextResponse.json({ message: "Works not found" }, { status: 404 });
   }
-  return NextResponse.json({ work }, { status: 200 });
+  const response = NextResponse.json({ work }, { status: 200 });
+  response.headers.set("Access-Control-Allow-Origin", "*");
+  return response;
 }
 
 export async function PATCH(req, { params }) {
