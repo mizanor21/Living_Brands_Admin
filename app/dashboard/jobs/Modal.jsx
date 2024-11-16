@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -6,53 +7,53 @@ import "react-toastify/dist/ReactToastify.css";
 const Modal = ({ isVisible, onClose, onSave }) => {
   if (!isVisible) return null;
 
-  const [formData, setFormData] = useState({
-    jobId: "",
-    title: "",
-    company: {
-      name: "",
-      website: "",
-      address: {
-        street: "",
-        city: "",
-        state: "",
-        postalCode: "",
-        country: "",
-      },
-    },
-    location: {
-      type: "",
-      city: "",
-      country: "",
-    },
-    employmentType: "",
-    experienceLevel: "",
-    industry: "",
-    department: "",
-    openings: 1,
-    description: "",
-    responsibilities: [],
-    requirements: {
-      education: "",
-      experience: "",
-      skills: [],
-      languages: [],
-    },
-    salary: {
-      currency: "",
-      min: 0,
-      max: 0,
-      frequency: "",
-    },
-    benefits: [],
-    applicationDetails: {
-      deadline: "",
-      link: "",
-      contactEmail: "",
-      instructions: "",
-    },
-    keywords: [],
-  });
+  // const [formData, setFormData] = useState({
+  //   jobId: "",
+  //   title: "",
+  //   company: {
+  //     name: "",
+  //     website: "",
+  //     address: {
+  //       street: "",
+  //       city: "",
+  //       state: "",
+  //       postalCode: "",
+  //       country: "",
+  //     },
+  //   },
+  //   location: {
+  //     type: "",
+  //     city: "",
+  //     country: "",
+  //   },
+  //   employmentType: "",
+  //   experienceLevel: "",
+  //   industry: "",
+  //   department: "",
+  //   openings: 1,
+  //   description: "",
+  //   responsibilities: [],
+  //   requirements: {
+  //     education: "",
+  //     experience: "",
+  //     skills: [],
+  //     languages: [],
+  //   },
+  //   salary: {
+  //     currency: "",
+  //     min: 0,
+  //     max: 0,
+  //     frequency: "",
+  //   },
+  //   benefits: [],
+  //   applicationDetails: {
+  //     deadline: "",
+  //     link: "",
+  //     contactEmail: "",
+  //     instructions: "",
+  //   },
+  //   keywords: [],
+  // });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
