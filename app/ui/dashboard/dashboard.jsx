@@ -9,11 +9,10 @@ const DashboardUI = () => {
   const [users, setUsers] = useState([]);
   const [messageList, setMessageList] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1); // Pagination state
-  const [currentTime, setCurrentTime] = useState(new Date()); // Real-time clock
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentTime, setCurrentTime] = useState(new Date());
   const messagesPerPage = 5;
 
-  // Fetch data when component mounts
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -29,7 +28,6 @@ const DashboardUI = () => {
         const messagesData = await messagesRes.json();
         setMessageList(messagesData.reverse());
       } catch (error) {
-        console.error("Error fetching data:", error);
         toast.error("Failed to fetch data. Please try again later.");
       } finally {
         setLoading(false);
@@ -39,7 +37,6 @@ const DashboardUI = () => {
     fetchData();
   }, []);
 
-  // Update the current time every second
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(timer);
@@ -53,12 +50,9 @@ const DashboardUI = () => {
     indexOfLastMessage
   );
 
-  // Delete handler with confirmation, toast notifications, and client-side update
   const handleDeleteMessage = async (id) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this message?"
-    );
-    if (!confirmDelete) return;
+    if (!window.confirm("Are you sure you want to delete this message?"))
+      return;
 
     try {
       const response = await fetch(
@@ -69,10 +63,7 @@ const DashboardUI = () => {
         }
       );
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to delete message");
-      }
+      if (!response.ok) throw new Error("Failed to delete message");
 
       setMessageList((prevMessages) =>
         prevMessages.filter((msg) => msg._id !== id)
@@ -83,40 +74,27 @@ const DashboardUI = () => {
         setCurrentPage((prevPage) => prevPage - 1);
       }
     } catch (error) {
-      console.error("Error deleting message:", error.message);
       toast.error("Failed to delete message. Please try again.");
     }
   };
 
   const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <p className="text-center text-gray-700">Loading...</p>;
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
-      {/* Toast Container */}
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        closeOnClick
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
+    <div className="min-h-screen bg-gradient-to-r from-gray-50 to-gray-100 p-6">
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
 
-      {/* Dashboard Header */}
       <div className="flex flex-col md:flex-row justify-between items-center mb-8">
-        <div className="mb-4 md:mb-0">
-          <h1 className="text-4xl font-bold text-gray-800">Dashboard</h1>
-          <p className="text-gray-600">
-            Welcome back! Here&apos;s what&apos;s happening today.
-          </p>
+        <div>
+          <h1 className="text-4xl font-extrabold text-gray-900">Dashboard</h1>
+          <p className="text-gray-600">Here’s your latest activity overview.</p>
         </div>
-        <div className="flex flex-col items-center md:items-end text-gray-700">
-          <div className="flex items-center space-x-2">
-            <FaClock className="text-gray-600" />
-            <p className="text-lg font-semibold">
+        <div className="text-gray-700">
+          <div className="flex items-center">
+            <FaClock className="mr-2 text-gray-600" />
+            <p className="text-lg font-medium">
               {format(currentTime, "h:mm:ss a")}
             </p>
           </div>
@@ -124,94 +102,126 @@ const DashboardUI = () => {
         </div>
       </div>
 
-      {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-md flex items-center">
-          <FaUser size={32} className="text-[#185c5d] mr-4" />
-          <div>
+        <div className="p-6 bg-white rounded-lg shadow-lg flex items-center">
+          <div className="p-4 bg-teal-500 rounded-full">
+            <FaUser className="text-white" size={24} />
+          </div>
+          <div className="ml-4">
             <p className="text-gray-600">Users</p>
-            <p className="text-2xl font-semibold text-gray-800">
-              {users.length}
-            </p>
+            <p className="text-2xl font-bold">{users.length}</p>
           </div>
         </div>
-        <div className="p-6 bg-white border border-gray-200 rounded-lg shadow-md flex items-center">
-          <FaEnvelope size={32} className="text-[#185c5d] mr-4" />
-          <div>
+
+        <div className="p-6 bg-white rounded-lg shadow-lg flex items-center">
+          <div className="p-4 bg-teal-500 rounded-full">
+            <FaEnvelope className="text-white" size={24} />
+          </div>
+          <div className="ml-4">
             <p className="text-gray-600">Messages</p>
-            <p className="text-2xl font-semibold text-gray-800">
-              {messageList.length}
-            </p>
+            <p className="text-2xl font-bold">{messageList.length}</p>
           </div>
         </div>
       </div>
 
       {/* Recent Messages */}
-      <div className="bg-white border border-gray-200 rounded-lg shadow-md p-6">
-        <h3 className="text-2xl font-semibold text-gray-800 mb-4">
+      <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-6">
+        <h3 className="text-2xl font-bold text-gray-800 mb-6">
           Recent Messages
         </h3>
         <ul className="space-y-6">
           {currentMessages.length === 0 ? (
-            <p className="text-gray-500">No recent messages.</p>
+            <p className="text-gray-500 text-center">No recent messages.</p>
           ) : (
             currentMessages.map((message) => (
               <li
                 key={message._id}
-                className="p-5 bg-gray-50 border border-gray-200 rounded-lg shadow-sm flex justify-between items-start"
+                className="relative p-5 bg-gradient-to-br from-teal-50 via-white to-teal-100 border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
               >
-                <div>
-                  <h4 className="text-lg font-semibold text-gray-800">
-                    {message.name}
-                  </h4>
-                  <p className="text-sm text-gray-500 mb-2">
-                    {message.organization} •{" "}
-                    {formatDistanceToNow(new Date(message.createdAt))} ago
-                  </p>
-                  <div className="text-gray-700">
-                    <p>
-                      <strong>Email:</strong>{" "}
-                      <a
-                        href={`mailto:${message.email}`}
-                        className="text-[#185c5d] hover:underline"
-                      >
-                        {message.email}
-                      </a>
-                    </p>
-                    <p>
-                      <strong>Phone:</strong> {message.phone}
-                    </p>
-                    {message.website && (
-                      <p>
-                        <strong>Website:</strong>{" "}
-                        <a
-                          href={message.website}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-[#185c5d] hover:underline"
-                        >
-                          {message.website}
-                        </a>
-                      </p>
-                    )}
-                    <p>
-                      <strong>Referral:</strong> {message.referral}
-                    </p>
-                    <p>
-                      <strong>Services:</strong> {message.services.join(", ")}
-                    </p>
-                    <p className="mt-2">
-                      <strong>Message:</strong> {message.message}
+                <div className="flex justify-between items-start">
+                  {/* Name and Organization */}
+                  <div>
+                    <h4 className="text-lg font-semibold text-gray-900 mb-1">
+                      {message.name}
+                    </h4>
+                    <p className="text-sm text-gray-500">
+                      {message.organization} •{" "}
+                      {formatDistanceToNow(new Date(message.createdAt))} ago
                     </p>
                   </div>
+
+                  {/* Delete Button */}
+                  <button
+                    onClick={() => handleDeleteMessage(message._id)}
+                    className="absolute top-4 right-4 text-red-500 hover:text-red-700"
+                    aria-label="Delete message"
+                  >
+                    <FaTrashAlt size={20} />
+                  </button>
                 </div>
-                <button
-                  onClick={() => handleDeleteMessage(message._id)}
-                  className="text-red-500 hover:text-red-700"
-                  aria-label="Delete message"
-                >
-                  <FaTrashAlt size={24} />
-                </button>
+
+                {/* Main Details */}
+                <div className="mt-4 text-gray-700">
+                  <p className="mb-2">
+                    <span className="font-semibold text-teal-600">Email:</span>{" "}
+                    <a
+                      href={`mailto:${message.email}`}
+                      className="text-teal-700 underline"
+                    >
+                      {message.email}
+                    </a>
+                  </p>
+                  <p className="mb-2">
+                    <span className="font-semibold text-teal-600">Phone:</span>{" "}
+                    {message.phone || "N/A"}
+                  </p>
+                  {message.website && (
+                    <p className="mb-2">
+                      <span className="font-semibold text-teal-600">
+                        Website:
+                      </span>{" "}
+                      <a
+                        href={message.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-teal-700 underline"
+                      >
+                        {message.website}
+                      </a>
+                    </p>
+                  )}
+                  <p className="mb-2">
+                    <span className="font-semibold text-teal-600">
+                      Referral:
+                    </span>{" "}
+                    {message.referral || "N/A"}
+                  </p>
+
+                  {/* Services Section */}
+                  <p className="mb-2">
+                    <span className="font-semibold text-teal-600">
+                      Services:
+                    </span>{" "}
+                    <span className="flex flex-wrap gap-2 mt-1">
+                      {message.services.map((service, index) => (
+                        <span
+                          key={index}
+                          className="bg-teal-200 text-teal-800 px-2 py-1 text-xs rounded-full shadow-sm"
+                        >
+                          {service}
+                        </span>
+                      ))}
+                    </span>
+                  </p>
+
+                  {/* Expandable Message */}
+                  <details className="mt-4 bg-teal-50 border border-teal-200 rounded-lg p-4">
+                    <summary className="cursor-pointer font-semibold text-teal-700">
+                      View Full Message
+                    </summary>
+                    <p className="mt-2 text-gray-800">{message.message}</p>
+                  </details>
+                </div>
               </li>
             ))
           )}
@@ -224,10 +234,10 @@ const DashboardUI = () => {
               <button
                 key={pageNumber}
                 onClick={() => handlePageChange(pageNumber)}
-                className={`mx-1 px-4 py-2 rounded ${
+                className={`mx-1 px-4 py-2 rounded-full ${
                   currentPage === pageNumber
-                    ? "bg-[#185c5d] text-white"
-                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                    ? "bg-teal-500 text-white"
+                    : "bg-gray-200 hover:bg-gray-300 text-gray-700"
                 }`}
               >
                 {pageNumber}
