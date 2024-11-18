@@ -10,7 +10,7 @@ import JourneySection from "./Journey";
 import ElevateSection from "./ElevateSction";
 
 const Home = () => {
-  const [heros, setHeros] = useState([]);
+  const [homes, setHomes] = useState([]);
   const [fetchError, setFetchError] = useState(null); // Added state to handle fetch errors
 
   useEffect(() => {
@@ -19,7 +19,7 @@ const Home = () => {
         const { data } = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}/api/home`
         );
-        setHeros(data || []);
+        setHomes(data || []);
       } catch (error) {
         setFetchError("Failed to load hero data. Please try again later.");
         toast.error("Failed to load hero data. Please try again later."); // Show error toast
@@ -38,7 +38,7 @@ const Home = () => {
     solutionSection = {},
     journeySection = {},
     brandSection = {},
-  } = heros[0] || {};
+  } = homes[0] || {};
 
   return (
     <div className="grid gap-5">
