@@ -7,9 +7,6 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Import the CSS for toast styles
 
 const HeroSection = ({ data, id }) => {
-  console.log("Received data:", data); // Log the initial data received as a prop
-  console.log("Received id:", id); // Log the id received as a prop
-
   const {
     register,
     handleSubmit,
