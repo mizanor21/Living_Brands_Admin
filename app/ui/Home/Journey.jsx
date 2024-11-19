@@ -42,6 +42,7 @@ const JourneySection = ({ data, id }) => {
         // JSON payload if no new image is provided
         payload = {
           "journeySection.title": formData.title,
+          "journeySection.image": formData.image,
         };
 
         headers = { "Content-Type": "application/json" };
@@ -99,7 +100,8 @@ const JourneySection = ({ data, id }) => {
               </label>
               <input
                 {...register("image")}
-                type="file"
+                type="url"
+                placeholder="Image URL"
                 aria-invalid={errors.image ? "true" : "false"}
                 className="rounded-lg px-5 py-2 border border-b-4 border-[#125b5c] w-full"
               />

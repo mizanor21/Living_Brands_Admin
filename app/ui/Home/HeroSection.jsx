@@ -16,6 +16,7 @@ const HeroSection = ({ data, id }) => {
     defaultValues: {
       title: data?.title || "",
       shortDescription: data?.shortDescription || "",
+      image: data?.image || "",
     },
   });
 
@@ -24,6 +25,7 @@ const HeroSection = ({ data, id }) => {
     reset({
       title: data?.title || "",
       shortDescription: data?.shortDescription || "",
+      image: data?.image || "",
     });
   }, [data, reset]);
 
@@ -33,6 +35,7 @@ const HeroSection = ({ data, id }) => {
       const payload = {
         "heroSection.title": formData.title,
         "heroSection.shortDescription": formData.shortDescription,
+        "heroSection.image": formData.image,
       };
 
       const response = await axios.patch(
@@ -101,11 +104,13 @@ const HeroSection = ({ data, id }) => {
                 Hero Image <span className="text-red-600">*</span>
               </label>
               <input
-                {...register("heroImage")}
-                type="file"
+                {...register("image")}
+                placeholder="Hero image"
+                defaultValue={data?.image || ""}
+                type="url"
                 className="rounded-lg px-5 py-2 border border-b-4 border-[#125b5c] w-full"
               />
-              {renderError(errors.heroImage)}
+              {renderError(errors.image)}
             </div>
           </div>
           <div className="w-full flex justify-end items-center mt-4">
