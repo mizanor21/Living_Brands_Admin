@@ -7,46 +7,35 @@ import { useForm } from "react-hook-form";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const JourneySection = ({ data, id }) => {
+const JourneySection = ({ data = {}, id }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
     reset,
+    formState: { errors },
   } = useForm({
     defaultValues: {
-      title: data?.title || "",
+      title: data.title || "",
+      image: data.image || "",
     },
   });
 
   useEffect(() => {
     // Reset form values when `data` changes
     reset({
-      title: data?.title || "",
+      title: data.title || "",
+      image: data.image || "",
     });
   }, [data, reset]);
 
   const onSubmit = async (formData) => {
     try {
-      let payload;
-      let headers;
+      const payload = {
+        "journeySection.title": formData.title,
+        "journeySection.image": formData.image,
+      };
 
-      // Check if a new image file is included
-      if (formData.image && formData.image.length > 0) {
-        payload = new FormData();
-        payload.append("journeySection.title", formData.title);
-        payload.append("journeySection.image", formData.image[0]); // Append image file
-
-        headers = { "Content-Type": "multipart/form-data" };
-      } else {
-        // JSON payload if no new image is provided
-        payload = {
-          "journeySection.title": formData.title,
-          "journeySection.image": formData.image,
-        };
-
-        headers = { "Content-Type": "application/json" };
-      }
+      const headers = { "Content-Type": "application/json" };
 
       const response = await axios.patch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/home/${id}`,
@@ -54,7 +43,6 @@ const JourneySection = ({ data, id }) => {
         { headers }
       );
 
-      console.log("Data updated successfully:", response.data);
       toast.success("Journey Section data updated successfully!");
     } catch (error) {
       console.error(
@@ -79,7 +67,7 @@ const JourneySection = ({ data, id }) => {
         <div className="flex items-center justify-between mb-5">
           <h3 className="font-bold uppercase">Journey Section</h3>
         </div>
-        <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid grid-cols-3 gap-5">
             <div className="w-full">
               <label>
@@ -96,10 +84,16 @@ const JourneySection = ({ data, id }) => {
 
             <div className="w-full">
               <label>
-                Image <span className="text-red-600">*</span>
+                Image URL <span className="text-red-600">*</span>
               </label>
               <input
-                {...register("image")}
+                {...register("image", {
+                  required: "Image URL is required",
+                  pattern: {
+                    value: /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|svg))$/,
+                    message: "Please enter a valid image URL",
+                  },
+                })}
                 type="url"
                 placeholder="Image URL"
                 aria-invalid={errors.image ? "true" : "false"}

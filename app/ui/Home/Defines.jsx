@@ -49,9 +49,8 @@ const DefinesSection = ({ data, id }) => {
           headers: { "Content-Type": "application/json" },
         }
       );
-
-      console.log("Data updated successfully:", response.data);
-      toast.success("Defines Section data updated successfully!");
+      alert("Defines Section data updated successfully!");
+      // toast.success("Defines Section data updated successfully!");
     } catch (error) {
       console.error(
         "Error updating data:",

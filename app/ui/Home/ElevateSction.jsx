@@ -44,8 +44,9 @@ const ElevateSection = ({ data, id }) => {
         }
       );
 
-      console.log("Data updated successfully:", response.data);
-      toast.success("Elevate Section data updated successfully!");
+      alert("Elevate Section data updated successfully!");
+
+      // toast.success("Elevate Section data updated successfully!");
     } catch (error) {
       console.error(
         "Error updating data:",

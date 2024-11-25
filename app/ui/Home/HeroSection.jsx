@@ -1,10 +1,11 @@
+"use client";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; // Import the CSS for toast styles
+import "react-toastify/dist/ReactToastify.css";
 
 const HeroSection = ({ data, id }) => {
   const {
@@ -38,22 +39,42 @@ const HeroSection = ({ data, id }) => {
         "heroSection.image": formData.image,
       };
 
+      const headers = { "Content-Type": "application/json" };
+
       const response = await axios.patch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/home/${id}`,
         payload,
-        {
-          headers: { "Content-Type": "application/json" },
-        }
+        { headers }
       );
 
-      console.log("Data updated successfully:", response.data);
-      toast.success("Data updated successfully!"); // Success notification
+      alert("Hero Section data updated successfully!");
+
+      // Display success notification
+      // toast.success("Hero Section data updated successfully!", {
+      //   position: "top-right",
+      //   autoClose: 3000,
+      //   hideProgressBar: false,
+      //   closeOnClick: true,
+      //   pauseOnHover: true,
+      //   draggable: true,
+      //   progress: undefined,
+      // });
     } catch (error) {
       console.error(
         "Error updating data:",
         error.response?.data || error.message
       );
-      toast.error("Failed to update data."); // Error notification
+
+      // Display error notification
+      toast.error("Failed to update Hero Section data.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
   };
 
@@ -104,7 +125,13 @@ const HeroSection = ({ data, id }) => {
                 Hero Image <span className="text-red-600">*</span>
               </label>
               <input
-                {...register("image")}
+                {...register("image", {
+                  required: "Hero Image URL is required",
+                  pattern: {
+                    value: /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|svg))$/,
+                    message: "Please enter a valid image URL",
+                  },
+                })}
                 placeholder="Hero image"
                 defaultValue={data?.image || ""}
                 type="url"
