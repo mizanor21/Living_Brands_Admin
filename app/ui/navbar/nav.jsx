@@ -22,12 +22,12 @@ const Nav = () => {
       </div>
       <div className="flex-none">
         <div className="dropdown dropdown-end">
-          <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
+          {/* <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
             <div className="indicator">
               <MdNotificationsActive className="text-2xl" />
               <span className="badge badge-sm indicator-item">8</span>
             </div>
-          </div>
+          </div> */}
           {/* <div
             tabIndex={0}
             className="card card-compact dropdown-content bg-gray-200 z-[1] mt-5 w-52 shadow"
