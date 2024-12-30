@@ -37,12 +37,14 @@ export async function PATCH(req, { params }) {
 export async function GET(req, { params }) {
   const { id } = params;
   await connectToDB();
-  const hero = await Blogs.findOne({ _id: id });
-  if (!hero) {
+  const blog = await Blogs.findOne({ _id: id });
+  if (!blog) {
     return NextResponse.json(
-      { message: "Hero data not found" },
+      { message: "blog data not found" },
       { status: 404 }
     );
   }
-  return NextResponse.json({ hero }, { status: 200 });
+  const response = NextResponse.json({ blog }, { status: 200 });
+  response.headers.set("Access-Control-Allow-Origin", "*");
+  return response;
 }
