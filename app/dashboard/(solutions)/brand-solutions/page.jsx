@@ -61,6 +61,26 @@ const EditModal = ({ data, isOpen, onClose, onSave }) => {
     onClose();
   };
 
+  // Function to add a new brand
+  const handleAddBrand = () => {
+    setFormData((prevData) => ({
+      ...prevData,
+      brand: [...(prevData.brand || []), { logo: "" }], // Add a new brand object
+    }));
+  };
+
+  // Function to remove a brand
+  const handleRemoveBrand = (index) => {
+    setFormData((prevData) => {
+      const updatedBrands = [...(prevData.brand || [])];
+      updatedBrands.splice(index, 1); // Remove the brand at the specified index
+      return {
+        ...prevData,
+        brand: updatedBrands,
+      };
+    });
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -108,7 +128,10 @@ const EditModal = ({ data, isOpen, onClose, onSave }) => {
         <div className="mb-4">
           <h3 className="font-semibold mb-2">Brand Logos</h3>
           {formData.brand?.map((brand, index) => (
-            <div key={brand._id} className="mb-2">
+            <div
+              key={brand._id || index}
+              className="mb-2 flex items-center gap-2"
+            >
               <input
                 className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
                 value={brand.logo}
@@ -117,8 +140,22 @@ const EditModal = ({ data, isOpen, onClose, onSave }) => {
                 }
                 placeholder="Logo URL"
               />
+              <button
+                type="button"
+                className="p-2 text-white bg-red-500 rounded"
+                onClick={() => handleRemoveBrand(index)}
+              >
+                Remove
+              </button>
             </div>
           ))}
+          <button
+            type="button"
+            className="mt-2 p-2 text-white bg-blue-500 rounded"
+            onClick={handleAddBrand}
+          >
+            Add Logo
+          </button>
         </div>
 
         <div className="flex justify-end space-x-4">
