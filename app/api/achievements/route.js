@@ -1,6 +1,5 @@
 import { Achievements } from "@/app/lib/Achievements/model";
 import { connectToDB } from "@/app/lib/connectToDB";
-import { Teams } from "@/app/lib/Teams/model";
 import { NextResponse } from "next/server";
 
 export async function GET() {
