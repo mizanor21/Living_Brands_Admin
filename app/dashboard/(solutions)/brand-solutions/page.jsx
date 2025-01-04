@@ -117,15 +117,8 @@ const EditModal = ({ data, isOpen, onClose, onSave }) => {
 
         {/* Items */}
         <div className="mb-4">
-          <div className="flex justify-between items-center mb-4">
+          <div className="flex  items-center mb-4">
             <h3 className="font-semibold mb-2 text-lg text-gray-800">Items</h3>
-            <button
-              type="button"
-              className="px-6 py-2 text-white font-semibold rounded-full bg-gradient-to-r from-[#125b5c] to-[#17a398] hover:from-[#17a398] hover:to-[#125b5c] focus:outline-none focus:ring-2 focus:ring-[#17a398] focus:ring-offset-2 shadow-md transition-all duration-200"
-              onClick={handleAddItem}
-            >
-              + Add New Item
-            </button>
           </div>
           {formData.items?.map((item, index) => (
             <div
@@ -161,19 +154,21 @@ const EditModal = ({ data, isOpen, onClose, onSave }) => {
               </button>
             </div>
           ))}
+          <div className="flex justify-end">
+            <button
+              type="button"
+              className="px-6 py-2 text-white font-semibold rounded-full bg-gradient-to-r from-[#125b5c] to-[#17a398] hover:from-[#17a398] hover:to-[#125b5c] focus:outline-none focus:ring-2 focus:ring-[#17a398] focus:ring-offset-2 shadow-md transition-all duration-200"
+              onClick={handleAddItem}
+            >
+              + Add New Item
+            </button>
+          </div>
         </div>
 
         {/* Brand Logos */}
         <div className="mb-6">
-          <div className="flex justify-between items-center mb-4">
+          <div className="flex items-center mb-4">
             <h3 className="font-semibold text-lg text-gray-800">Brand Logos</h3>
-            <button
-              type="button"
-              className="px-6 py-2 text-white font-semibold rounded-full bg-gradient-to-r from-[#125b5c] to-[#17a398] hover:from-[#17a398] hover:to-[#125b5c] focus:outline-none focus:ring-2 focus:ring-[#17a398] focus:ring-offset-2 shadow-md transition-all duration-200"
-              onClick={handleAddBrand}
-            >
-              + Add Logo
-            </button>
           </div>
           {formData.brand?.map((brand, index) => (
             <div
@@ -198,9 +193,18 @@ const EditModal = ({ data, isOpen, onClose, onSave }) => {
               </button>
             </div>
           ))}
+          <div className="flex justify-end">
+            <button
+              type="button"
+              className="px-6 py-2 text-white font-semibold rounded-full bg-gradient-to-r from-[#125b5c] to-[#17a398] hover:from-[#17a398] hover:to-[#125b5c] focus:outline-none focus:ring-2 focus:ring-[#17a398] focus:ring-offset-2 shadow-md transition-all duration-200"
+              onClick={handleAddBrand}
+            >
+              + Add Logo
+            </button>
+          </div>
         </div>
 
-        <div className="flex justify-end space-x-4">
+        <div className="flex justify-center space-x-4">
           <button
             className="px-6 py-2 text-black font-semibold rounded-full bg-gray-300 hover:bg-slate-400 shadow-md transition-all duration-200"
             onClick={onClose}
