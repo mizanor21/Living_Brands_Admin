@@ -61,6 +61,23 @@ const EditModal = ({ data, isOpen, onClose, onSave }) => {
     onClose();
   };
 
+  // Function to add a new item
+  const handleAddItem = () => {
+    setFormData((prev) => ({
+      ...prev,
+      items: [...(prev.items || []), { title: "", content: "" }], // Add a new item
+    }));
+  };
+
+  // Function to remove an item
+  const handleRemoveItem = (index) => {
+    setFormData((prev) => {
+      const updatedItems = [...(prev.items || [])];
+      updatedItems.splice(index, 1); // Remove the item at the specified index
+      return { ...prev, items: updatedItems };
+    });
+  };
+
   // Function to add a new brand
   const handleAddBrand = () => {
     setFormData((prevData) => ({
@@ -100,40 +117,71 @@ const EditModal = ({ data, isOpen, onClose, onSave }) => {
 
         {/* Items */}
         <div className="mb-4">
-          <h3 className="font-semibold mb-2">Items</h3>
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="font-semibold mb-2 text-lg text-gray-800">Items</h3>
+            <button
+              type="button"
+              className="px-6 py-2 text-white font-semibold rounded-full bg-gradient-to-r from-[#125b5c] to-[#17a398] hover:from-[#17a398] hover:to-[#125b5c] focus:outline-none focus:ring-2 focus:ring-[#17a398] focus:ring-offset-2 shadow-md transition-all duration-200"
+              onClick={handleAddItem}
+            >
+              + Add New Item
+            </button>
+          </div>
           {formData.items?.map((item, index) => (
-            <div key={item._id} className="mb-4 border-b border-gray-200 pb-4">
-              <input
-                className="w-full p-3 border border-gray-300 rounded mb-2 focus:outline-none focus:border-blue-500"
-                value={item.title}
-                onChange={(e) =>
-                  handleItemChange(index, "title", e.target.value)
-                }
-                placeholder="Title"
-              />
-              <textarea
-                className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-blue-500 resize-none"
-                rows="2"
-                value={item.content}
-                onChange={(e) =>
-                  handleItemChange(index, "content", e.target.value)
-                }
-                placeholder="Content"
-              />
+            <div
+              key={item._id || index}
+              className="mb-4 bg-white shadow-lg rounded-lg p-4 flex gap-4 items-start border border-gray-200"
+            >
+              <div className="flex-1">
+                <input
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-2"
+                  value={item.title}
+                  onChange={(e) =>
+                    handleItemChange(index, "title", e.target.value)
+                  }
+                  placeholder="Title"
+                />
+                <textarea
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none min-h-[100px]"
+                  rows="2"
+                  value={item.content}
+                  onChange={(e) =>
+                    handleItemChange(index, "content", e.target.value)
+                  }
+                  placeholder="Content"
+                />
+              </div>
+              <button
+                type="button"
+                className="flex-shrink-0 p-2 rounded-full bg-red-100 text-red-500 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500"
+                onClick={() => handleRemoveItem(index)}
+                aria-label="Remove Item"
+              >
+                ✖
+              </button>
             </div>
           ))}
         </div>
 
         {/* Brand Logos */}
-        <div className="mb-4">
-          <h3 className="font-semibold mb-2">Brand Logos</h3>
+        <div className="mb-6">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="font-semibold text-lg text-gray-800">Brand Logos</h3>
+            <button
+              type="button"
+              className="px-6 py-2 text-white font-semibold rounded-full bg-gradient-to-r from-[#125b5c] to-[#17a398] hover:from-[#17a398] hover:to-[#125b5c] focus:outline-none focus:ring-2 focus:ring-[#17a398] focus:ring-offset-2 shadow-md transition-all duration-200"
+              onClick={handleAddBrand}
+            >
+              + Add Logo
+            </button>
+          </div>
           {formData.brand?.map((brand, index) => (
             <div
               key={brand._id || index}
-              className="mb-2 flex items-center gap-2"
+              className="mb-4 flex items-center gap-4 bg-white shadow-md rounded-lg p-4 border border-gray-200"
             >
               <input
-                className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+                className="flex-grow p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={brand.logo}
                 onChange={(e) =>
                   handleBrandChange(index, "logo", e.target.value)
@@ -142,25 +190,19 @@ const EditModal = ({ data, isOpen, onClose, onSave }) => {
               />
               <button
                 type="button"
-                className="p-2 text-white bg-red-500 rounded"
+                className="flex-shrink-0 p-2 rounded-full bg-red-100 text-red-500 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500"
                 onClick={() => handleRemoveBrand(index)}
+                aria-label="Remove Logo"
               >
-                Remove
+                ✖
               </button>
             </div>
           ))}
-          <button
-            type="button"
-            className="mt-2 p-2 text-white bg-blue-500 rounded"
-            onClick={handleAddBrand}
-          >
-            Add Logo
-          </button>
         </div>
 
         <div className="flex justify-end space-x-4">
           <button
-            className="px-6 py-2 text-white font-semibold rounded-full bg-gradient-to-r from-[#125b5c] to-[#17a398] hover:from-[#17a398] hover:to-[#125b5c] focus:outline-none focus:ring-2 focus:ring-[#17a398] focus:ring-offset-2 shadow-md transition-all duration-200"
+            className="px-6 py-2 text-black font-semibold rounded-full bg-gray-300 hover:bg-slate-400 shadow-md transition-all duration-200"
             onClick={onClose}
           >
             Cancel
