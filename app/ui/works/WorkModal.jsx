@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import React, { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 const WorkModal = ({ workId, modalId }) => {
   const {
@@ -69,10 +70,6 @@ const WorkModal = ({ workId, modalId }) => {
     const services = data.services.filter(
       (service) => service.serviceName && service.description
     );
-    if (!data.title || !data.category || !data.thumbnail) {
-      console.error("Missing essential fields.");
-      return;
-    }
 
     setLoading(true);
     try {
@@ -106,7 +103,7 @@ const WorkModal = ({ workId, modalId }) => {
       }
 
       const result = await response.json();
-      console.log("Work updated successfully:", result);
+      toast.success("Work updated successfully.");
 
       // Only close modal if it exists
       const modal = document.getElementById(modalId);

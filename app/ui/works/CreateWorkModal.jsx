@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 const CreateWorkModal = ({ modalId }) => {
   const {
@@ -37,7 +38,7 @@ const CreateWorkModal = ({ modalId }) => {
 
       const result = await response.json();
       if (response.ok) {
-        console.log("Work created successfully:", result.message);
+        toast.success("Work item created successfully");
         reset();
         document.getElementById(modalId).close();
       } else {
@@ -119,9 +120,8 @@ const CreateWorkModal = ({ modalId }) => {
                 Industry <span className="text-red-600">*</span>
               </label>
               <input
-                {...register("industry", { required: "Industry is required" })}
+                {...register("industry")}
                 placeholder="Industry"
-                aria-invalid={errors.industry ? "true" : "false"}
                 className="rounded-lg px-5 py-2 border border-[#125b5c] w-full"
               />
               {errors.industry && (
@@ -135,9 +135,8 @@ const CreateWorkModal = ({ modalId }) => {
                 Category <span className="text-red-600">*</span>
               </label>
               <input
-                {...register("category", { required: "Category is required" })}
+                {...register("category")}
                 placeholder="Category"
-                aria-invalid={errors.category ? "true" : "false"}
                 className="rounded-lg px-5 py-2 border border-[#125b5c] w-full"
               />
               {errors.industry && (
