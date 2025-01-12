@@ -4,6 +4,7 @@ import { formatDistanceToNow, format } from "date-fns";
 import { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Link from "next/link";
 
 const DashboardUI = () => {
   const [users, setUsers] = useState([]);
@@ -103,7 +104,10 @@ const DashboardUI = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <div className="p-6 bg-white rounded-lg shadow-lg flex items-center">
+        <Link
+          href="/dashboard/manage-users"
+          className="p-6 bg-white rounded-lg shadow-lg flex items-center transition-transform duration-300 hover:scale-95"
+        >
           <div className="p-4 bg-teal-500 rounded-full">
             <FaUser className="text-white" size={24} />
           </div>
@@ -111,9 +115,9 @@ const DashboardUI = () => {
             <p className="text-gray-600">Users</p>
             <p className="text-2xl font-bold">{users.length}</p>
           </div>
-        </div>
+        </Link>
 
-        <div className="p-6 bg-white rounded-lg shadow-lg flex items-center">
+        <div className="p-6 bg-white rounded-lg shadow-lg flex items-center transition-transform duration-300 hover:scale-95">
           <div className="p-4 bg-teal-500 rounded-full">
             <FaEnvelope className="text-white" size={24} />
           </div>
@@ -136,7 +140,7 @@ const DashboardUI = () => {
             currentMessages.map((message) => (
               <li
                 key={message._id}
-                className="relative p-5 bg-gradient-to-br from-teal-50 via-white to-teal-100 border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
+                className="relative p-5 bg-gradient-to-br from-teal-50 via-white to-teal-100 border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-95"
               >
                 <div className="flex justify-between items-start">
                   {/* Name and Organization */}
@@ -234,7 +238,7 @@ const DashboardUI = () => {
               <button
                 key={pageNumber}
                 onClick={() => handlePageChange(pageNumber)}
-                className={`mx-1 px-4 py-2 rounded-full ${
+                className={`mx-1 px-4 py-2 rounded-full transition-transform duration-300 hover:scale-95 ${
                   currentPage === pageNumber
                     ? "bg-teal-500 text-white"
                     : "bg-gray-200 hover:bg-gray-300 text-gray-700"
