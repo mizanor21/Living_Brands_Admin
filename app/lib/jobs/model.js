@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const JobCircularSchema = new mongoose.Schema({
-  jobId: { type: String, required: true, unique: true },
+  jobId: { type: String },
   title: { type: String, required: true },
   company: {
     name: { type: String, required: true },

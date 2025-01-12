@@ -5,56 +5,56 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Modal = ({ isVisible, onClose, onSave }) => {
-  if (!isVisible) return null;
-
-  // const [formData, setFormData] = useState({
-  //   jobId: "",
-  //   title: "",
-  //   company: {
-  //     name: "",
-  //     website: "",
-  //     address: {
-  //       street: "",
-  //       city: "",
-  //       state: "",
-  //       postalCode: "",
-  //       country: "",
-  //     },
-  //   },
-  //   location: {
-  //     type: "",
-  //     city: "",
-  //     country: "",
-  //   },
-  //   employmentType: "",
-  //   experienceLevel: "",
-  //   industry: "",
-  //   department: "",
-  //   openings: 1,
-  //   description: "",
-  //   responsibilities: [],
-  //   requirements: {
-  //     education: "",
-  //     experience: "",
-  //     skills: [],
-  //     languages: [],
-  //   },
-  //   salary: {
-  //     currency: "",
-  //     min: 0,
-  //     max: 0,
-  //     frequency: "",
-  //   },
-  //   benefits: [],
-  //   applicationDetails: {
-  //     deadline: "",
-  //     link: "",
-  //     contactEmail: "",
-  //     instructions: "",
-  //   },
-  //   keywords: [],
-  // });
-
+  const [formData, setFormData] = useState({
+    jobId: "",
+    title: "",
+    company: {
+      name: "",
+      website: "",
+      address: {
+        street: "",
+        city: "",
+        state: "",
+        postalCode: "",
+        country: "",
+      },
+    },
+    location: {
+      type: "",
+      city: "",
+      country: "",
+    },
+    employmentType: "",
+    experienceLevel: "",
+    industry: "",
+    department: "",
+    openings: 1,
+    description: "",
+    responsibilities: [],
+    requirements: {
+      education: "",
+      experience: "",
+      skills: [],
+      languages: [],
+    },
+    salary: {
+      currency: "",
+      min: 0,
+      max: 0,
+      frequency: "",
+    },
+    benefits: [],
+    applicationDetails: {
+      deadline: "",
+      link: "",
+      contactEmail: "",
+      instructions: "",
+    },
+    keywords: [],
+  });
+  if (!isVisible) {
+    return;
+  }
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
@@ -124,7 +124,6 @@ const Modal = ({ isVisible, onClose, onSave }) => {
             onChange={handleInputChange}
             placeholder="Job ID (Required)"
             className="border p-2 rounded mb-4 w-full"
-            required
           />
           <input
             type="text"
