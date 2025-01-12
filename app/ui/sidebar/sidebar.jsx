@@ -50,6 +50,7 @@ const Sidebar = () => {
         { title: "Our Partnership", path: "/dashboard/partnership" },
         { title: "Achievements", path: "/dashboard/achievements" },
         { title: "Meet The Team", path: "/dashboard/meet-our-team" },
+        { title: "News Center", path: "/dashboard/news-center" },
       ],
     },
     {
