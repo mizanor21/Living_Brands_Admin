@@ -98,12 +98,12 @@ const JobsUI = () => {
                   <BsThreeDotsVertical className="text-gray-400 hover:text-gray-700 cursor-pointer text-xl" />
                   {hoveredJob === job._id && (
                     <div className="absolute right-0 top-6 bg-white shadow-lg rounded-lg border p-2 w-28">
-                      {/* <button
+                      <button
                         // onClick={() => handleEditClick(job)}
                         className="block text-gray-700 w-full text-left p-2 hover:bg-gray-100"
                       >
                         Edit
-                      </button> */}
+                      </button>
                       <button
                         onClick={() => handleDeleteJob(job._id)}
                         className="block text-gray-700 w-full text-left p-2 hover:bg-gray-100"

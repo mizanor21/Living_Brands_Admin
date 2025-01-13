@@ -39,6 +39,14 @@ const NewsItems = ({ data, setData }) => {
     setIsModalOpen(true);
   };
 
+  const handleAdd = () => {
+    // setSelectedItem(item);
+    // setValue("title", item?.title);
+    // setValue("img", item.img);
+    // setValue("description", item.description || "");
+    setIsModalOpen(true);
+  };
+
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedItem(null);
@@ -93,6 +101,9 @@ const NewsItems = ({ data, setData }) => {
     <div>
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">News Items</h1>
+        <button onClick={() => handleAdd()} className="btn px-10 py-2">
+          Add News
+        </button>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 gap-y-10">
         {data.map((item) => (
