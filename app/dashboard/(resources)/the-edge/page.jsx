@@ -206,6 +206,7 @@ const Edge = () => {
             <h2 className="text-2xl font-bold mb-4">
               {isEdit ? "Edit Edge" : "Add New Edge"}
             </h2>
+            <label className="block mb-2 font-semibold">Title</label>
             <input
               name="title"
               value={modalData.title}
@@ -213,6 +214,9 @@ const Edge = () => {
               placeholder="Title"
               className="w-full mb-3 p-2 border rounded"
             />
+            <label className="block mb-2 font-semibold">
+              Description (Separate lines)
+            </label>
             <textarea
               name="description"
               value={modalData.description}
@@ -221,6 +225,7 @@ const Edge = () => {
               className="w-full mb-3 p-2 border rounded"
               rows="4"
             />
+            <label className="block mb-2 font-semibold">Button Text</label>
             <input
               name="buttonText"
               value={modalData.buttonText}
@@ -228,6 +233,7 @@ const Edge = () => {
               placeholder="Button Text"
               className="w-full mb-3 p-2 border rounded"
             />
+            <label className="block mb-2 font-semibold">Button Link</label>
             <input
               name="buttonLink"
               value={modalData.buttonLink}
@@ -235,6 +241,7 @@ const Edge = () => {
               placeholder="Button Link"
               className="w-full mb-3 p-2 border rounded"
             />
+            <label className="block mb-2 font-semibold">Image URL</label>
             <input
               name="image"
               value={modalData.image}
