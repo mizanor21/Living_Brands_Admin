@@ -17,7 +17,7 @@ const JobCircularSchema = new mongoose.Schema({
   location: {
     type: {
       type: String,
-      // enum: ["Remote", "On-site", "Hybrid"],
+      enum: ["Remote", "On-site", "Hybrid"],
     },
     city: String,
     country: String,
@@ -38,17 +38,17 @@ const JobCircularSchema = new mongoose.Schema({
   requirements: {
     education: String,
     experience: String,
-    skills: [String],
-    languages: [String],
   },
+  skills: [String],
+  languages: [String],
   salary: {
-    // currency: String,
+    currency: String,
     min: Number,
     max: Number,
-    // frequency: {
-    //   type: String,
-    //   enum: ["Hourly", "Weekly", "Monthly", "Yearly"],
-    // },
+    frequency: {
+      type: String,
+      enum: ["Hourly", "Weekly", "Monthly", "Yearly"],
+    },
   },
   benefits: [String],
   applicationDetails: {

@@ -34,9 +34,9 @@ const Modal = ({ isVisible, onClose, onSave }) => {
     requirements: {
       education: "",
       experience: "",
-      skills: [],
-      languages: [],
     },
+    skills: [],
+    languages: [],
     salary: {
       currency: "",
       min: 0,
@@ -91,11 +91,10 @@ const Modal = ({ isVisible, onClose, onSave }) => {
     try {
       await axios.post("/api/jobs", formData);
       onSave(formData);
-      toast.success("Job saved successfully!");
+      alert("Successfully job circular post");
       onClose();
     } catch (error) {
       toast.error("Error saving job. Please try again.");
-      console.error("Error saving job:", error);
     }
   };
 
@@ -114,247 +113,270 @@ const Modal = ({ isVisible, onClose, onSave }) => {
           </button>
         </div>
 
-        {/* Modal Content (Scrollable) */}
+        {/* /* Modal Content (Scrollable) */}
         <div className="p-4 overflow-y-auto flex-grow">
           {/* Job Basic Info */}
+          <label className="block mb-2">Job ID (Required)</label>
           <input
             type="text"
             name="jobId"
             value={formData.jobId}
             onChange={handleInputChange}
-            placeholder="Job ID (Required)"
             className="border p-2 rounded mb-4 w-full"
           />
+          <label className="block mb-2">Job Title (Required)</label>
           <input
             type="text"
             name="title"
             value={formData.title}
             onChange={handleInputChange}
-            placeholder="Job Title (Required)"
             className="border p-2 rounded mb-4 w-full"
             required
           />
+          <label className="block mb-2">Job Description (Required)</label>
           <textarea
             name="description"
             value={formData.description}
             onChange={handleInputChange}
-            placeholder="Job Description (Required)"
             className="border p-2 rounded mb-4 w-full"
             required
           />
 
           {/* Company Information */}
+          <label className="block mb-2">Company Name (Required)</label>
           <input
             type="text"
             value={formData.company.name}
             onChange={(e) => handleNestedInputChange(e, "company", "name")}
-            placeholder="Company Name (Required)"
             className="border p-2 rounded mb-4 w-full"
             required
           />
+          <label className="block mb-2">Company Website</label>
           <input
             type="text"
             value={formData.company.website}
             onChange={(e) => handleNestedInputChange(e, "company", "website")}
-            placeholder="Company Website"
             className="border p-2 rounded mb-4 w-full"
           />
+          <label className="block mb-2">Street Address (Required)</label>
           <input
             type="text"
             value={formData.company.address.street}
             onChange={(e) =>
               handleDeepNestedInputChange(e, "company", "address", "street")
             }
-            placeholder="Street Address (Required)"
             className="border p-2 rounded mb-4 w-full"
             required
           />
+          <label className="block mb-2">City (Required)</label>
           <input
             type="text"
             value={formData.company.address.city}
             onChange={(e) =>
               handleDeepNestedInputChange(e, "company", "address", "city")
             }
-            placeholder="City (Required)"
             className="border p-2 rounded mb-4 w-full"
             required
           />
+          <label className="block mb-2">State</label>
           <input
             type="text"
             value={formData.company.address.state}
             onChange={(e) =>
               handleDeepNestedInputChange(e, "company", "address", "state")
             }
-            placeholder="State"
             className="border p-2 rounded mb-4 w-full"
           />
+          <label className="block mb-2">Postal Code (Required)</label>
           <input
             type="text"
             value={formData.company.address.postalCode}
             onChange={(e) =>
               handleDeepNestedInputChange(e, "company", "address", "postalCode")
             }
-            placeholder="Postal Code (Required)"
             className="border p-2 rounded mb-4 w-full"
             required
           />
+          <label className="block mb-2">Country (Required)</label>
           <input
             type="text"
             value={formData.company.address.country}
             onChange={(e) =>
               handleDeepNestedInputChange(e, "company", "address", "country")
             }
-            placeholder="Country (Required)"
             className="border p-2 rounded mb-4 w-full"
             required
           />
 
           {/* Location Information */}
-          <input
-            type="text"
+          <label className="block mb-2">
+            Works Space (e.g., Remote, On-Site)
+          </label>
+          <select
             value={formData.location.type}
             onChange={(e) => handleNestedInputChange(e, "location", "type")}
-            placeholder="Location Type (e.g., Remote)"
             className="border p-2 rounded mb-4 w-full"
-          />
+          >
+            <option value="">Select Work Space</option>
+            <option value="Remote">Remote</option>
+            <option value="On-site">On-site</option>
+            <option value="Hybrid">Hybrid</option>
+          </select>
+          <label className="block mb-2">Location City</label>
           <input
             type="text"
             value={formData.location.city}
             onChange={(e) => handleNestedInputChange(e, "location", "city")}
-            placeholder="Location City"
             className="border p-2 rounded mb-4 w-full"
           />
+          <label className="block mb-2">Location Country</label>
           <input
             type="text"
             value={formData.location.country}
             onChange={(e) => handleNestedInputChange(e, "location", "country")}
-            placeholder="Location Country"
             className="border p-2 rounded mb-4 w-full"
           />
 
-          {/* Employment Details */}
-          <input
-            type="text"
+          {/* Employment Details  */}
+          <label className="block mb-2">Employment Type</label>
+          <select
             name="employmentType"
             value={formData.employmentType}
             onChange={handleInputChange}
-            placeholder="Employment Type"
             className="border p-2 rounded mb-4 w-full"
-          />
-          <input
-            type="text"
+          >
+            <option value="">Select Employment Type</option>
+            <option value="Full-time">Full-time</option>
+            <option value="Part-time">Part-time</option>
+            <option value="Contract">Contract</option>
+            <option value="Temporary">Temporary</option>
+            <option value="Internship">Internship</option>
+          </select>
+          <label className="block mb-2">Experience Level</label>
+          <select
             name="experienceLevel"
             value={formData.experienceLevel}
             onChange={handleInputChange}
-            placeholder="Experience Level"
             className="border p-2 rounded mb-4 w-full"
-          />
+          >
+            <option value="">Select Experience Level</option>
+            <option value="Entry-level">Entry-level</option>
+            <option value="Mid-level">Mid-level</option>
+            <option value="Senior-level">Senior-level</option>
+            <option value="Director">Director</option>
+          </select>
+          <label className="block mb-2">Industry</label>
           <input
             type="text"
             name="industry"
             value={formData.industry}
             onChange={handleInputChange}
-            placeholder="Industry"
             className="border p-2 rounded mb-4 w-full"
           />
+          <label className="block mb-2">Department</label>
           <input
             type="text"
             name="department"
             value={formData.department}
             onChange={handleInputChange}
-            placeholder="Department"
             className="border p-2 rounded mb-4 w-full"
           />
+          <label className="block mb-2">Number of Openings</label>
           <input
             type="number"
             name="openings"
             value={formData.openings}
             onChange={handleInputChange}
-            placeholder="Number of Openings"
             className="border p-2 rounded mb-4 w-full"
           />
 
           {/* Responsibilities and Requirements */}
+          <label className="block mb-2">
+            Responsibilities (comma-separated)
+          </label>
           <input
             type="text"
             value={formData.responsibilities.join(", ")}
             onChange={(e) => handleArrayInputChange(e, "responsibilities")}
-            placeholder="Responsibilities (comma-separated)"
             className="border p-2 rounded mb-4 w-full"
           />
+          <label className="block mb-2">Education Requirement</label>
           <input
             type="text"
             value={formData.requirements.education}
             onChange={(e) =>
               handleNestedInputChange(e, "requirements", "education")
             }
-            placeholder="Education Requirement"
             className="border p-2 rounded mb-4 w-full"
           />
+          <label className="block mb-2">Experience Requirement</label>
           <input
             type="text"
             value={formData.requirements.experience}
             onChange={(e) =>
               handleNestedInputChange(e, "requirements", "experience")
             }
-            placeholder="Experience Requirement"
             className="border p-2 rounded mb-4 w-full"
           />
+          <label className="block mb-2">Skills (comma-separated)</label>
           <input
             type="text"
-            value={formData.requirements.skills.join(", ")}
-            onChange={(e) => handleArrayInputChange(e, "requirements.skills")}
-            placeholder="Skills (comma-separated)"
+            value={formData.skills.join(", ")}
+            onChange={(e) => handleArrayInputChange(e, "skills")}
             className="border p-2 rounded mb-4 w-full"
           />
+          <label className="block mb-2">Languages (comma-separated)</label>
           <input
             type="text"
-            value={formData.requirements.languages.join(", ")}
-            onChange={(e) =>
-              handleArrayInputChange(e, "requirements.languages")
-            }
-            placeholder="Languages (comma-separated)"
+            value={formData.languages.join(", ")}
+            onChange={(e) => handleArrayInputChange(e, "languages")}
             className="border p-2 rounded mb-4 w-full"
           />
 
-          {/* Salary Information */}
+          {/* /* Salary Information  */}
+          <label className="block mb-2">Currency</label>
           <input
             type="text"
             value={formData.salary.currency}
             onChange={(e) => handleNestedInputChange(e, "salary", "currency")}
-            placeholder="Currency"
             className="border p-2 rounded mb-4 w-full"
           />
+          <label className="block mb-2">Minimum Salary</label>
           <input
             type="number"
             value={formData.salary.min}
             onChange={(e) => handleNestedInputChange(e, "salary", "min")}
-            placeholder="Minimum Salary"
             className="border p-2 rounded mb-4 w-full"
           />
+          <label className="block mb-2">Maximum Salary</label>
           <input
             type="number"
             value={formData.salary.max}
             onChange={(e) => handleNestedInputChange(e, "salary", "max")}
-            placeholder="Maximum Salary"
             className="border p-2 rounded mb-4 w-full"
           />
-          <input
-            type="text"
+          <label className="block mb-2">Salary Frequency</label>
+          <select
             value={formData.salary.frequency}
             onChange={(e) => handleNestedInputChange(e, "salary", "frequency")}
-            placeholder="Salary Frequency (e.g., Yearly)"
             className="border p-2 rounded mb-4 w-full"
-          />
+          >
+            <option value="">Select Frequency</option>
+            <option value="Hourly">Hourly</option>
+            <option value="Weekly">Weekly</option>
+            <option value="Monthly">Monthly</option>
+            <option value="Yearly">Yearly</option>
+          </select>
 
           {/* Benefits and Application Details */}
+          <label className="block mb-2">Benefits (comma-separated)</label>
           <input
             type="text"
             value={formData.benefits.join(", ")}
             onChange={(e) => handleArrayInputChange(e, "benefits")}
-            placeholder="Benefits (comma-separated)"
             className="border p-2 rounded mb-4 w-full"
           />
+          <label className="block mb-2">Application Deadline</label>
           <input
             type="date"
             value={formData.applicationDetails.deadline}
@@ -363,44 +385,42 @@ const Modal = ({ isVisible, onClose, onSave }) => {
             }
             className="border p-2 rounded mb-4 w-full"
           />
+          <label className="block mb-2">Application Link</label>
           <input
             type="text"
             value={formData.applicationDetails.link}
             onChange={(e) =>
               handleNestedInputChange(e, "applicationDetails", "link")
             }
-            placeholder="Application Link"
             className="border p-2 rounded mb-4 w-full"
           />
+          <label className="block mb-2">Contact Email</label>
           <input
             type="email"
             value={formData.applicationDetails.contactEmail}
             onChange={(e) =>
               handleNestedInputChange(e, "applicationDetails", "contactEmail")
             }
-            placeholder="Contact Email"
             className="border p-2 rounded mb-4 w-full"
           />
+          <label className="block mb-2">Application Instructions</label>
           <textarea
             value={formData.applicationDetails.instructions}
             onChange={(e) =>
               handleNestedInputChange(e, "applicationDetails", "instructions")
             }
-            placeholder="Application Instructions"
             className="border p-2 rounded mb-4 w-full"
           />
 
           {/* Keywords */}
+          <label className="block mb-2">Keywords (comma-separated)</label>
           <input
             type="text"
             value={formData.keywords.join(", ")}
             onChange={(e) => handleArrayInputChange(e, "keywords")}
-            placeholder="Keywords (comma-separated)"
             className="border p-2 rounded mb-4 w-full"
           />
         </div>
-
-        {/* Modal Footer */}
         <div className="flex justify-end p-4 border-t">
           <button
             onClick={handleSaveClick}
