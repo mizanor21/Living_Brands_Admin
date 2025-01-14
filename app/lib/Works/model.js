@@ -16,6 +16,7 @@ const workSchema = new mongoose.Schema(
     serviceDetails: String,
     industry: String,
     img: String,
+    videoIframeURL: String,
     isActive: Boolean,
   },
   { timestamps: true }
