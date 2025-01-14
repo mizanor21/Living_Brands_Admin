@@ -249,6 +249,25 @@ const WorkModal = ({ workId, modalId }) => {
               )}
             </div>
 
+            <div>
+              <label htmlFor="videoIframeURL">
+                YouTube Iframe URL <span className="text-red-600">*</span>
+              </label>
+              <input
+                {...register("videoIframeURL", {
+                  required: "VideoIframe URL is required",
+                })}
+                placeholder="VideoIframe URL"
+                aria-invalid={errors.videoIframeURL ? "true" : "false"}
+                className="rounded-lg px-5 py-2 border border-[#125b5c] w-full"
+              />
+              {errors.videoIframeURL && (
+                <small className="text-red-600">
+                  {errors.videoIframeURL.message}
+                </small>
+              )}
+            </div>
+
             {/* Submit Button */}
             <div className="w-full flex justify-end items-center">
               <Button
